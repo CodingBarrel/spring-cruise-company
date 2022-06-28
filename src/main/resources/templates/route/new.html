@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New</title>
+</head>
+<body>
+<form th:method="PUT" th:action="@{/route}" th:object="${route}">
+    <label for="name">Name: </label>
+    <input name="name" id="name" th:field="*{name}"/>
+    <input type="submit" value="Insert"/>
+</form>
+</body>
+</html>
