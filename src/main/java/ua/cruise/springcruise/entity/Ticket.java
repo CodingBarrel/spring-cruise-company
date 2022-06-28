@@ -1,9 +1,6 @@
 package ua.cruise.springcruise.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ua.cruise.springcruise.entity.dictionary.TicketStatusDict;
 
 import javax.persistence.*;
@@ -13,6 +10,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 public class Ticket {
     @Id
@@ -37,4 +35,5 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "status_id")
     private TicketStatusDict status;
+    
 }

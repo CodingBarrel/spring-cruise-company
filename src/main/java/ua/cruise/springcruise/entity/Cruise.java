@@ -1,9 +1,6 @@
 package ua.cruise.springcruise.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ua.cruise.springcruise.entity.dictionary.CruiseStatusDict;
 
 import javax.persistence.*;
@@ -14,6 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 public class Cruise {
     @Id

@@ -28,4 +28,14 @@ public class User {
     private UserRoleDict role;
 
     private LocalDateTime lastLoginDate;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", role=" + role +
+                ", lastLoginDate=" + lastLoginDate +
+                '}';
+    }
 }
