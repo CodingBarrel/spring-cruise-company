@@ -12,13 +12,13 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class Route {
+public class Liner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
+    private int passengerCapacity;
 }

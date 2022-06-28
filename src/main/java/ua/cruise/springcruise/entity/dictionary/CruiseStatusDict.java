@@ -1,24 +1,23 @@
-package ua.cruise.springcruise.entity;
+package ua.cruise.springcruise.entity.dictionary;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Setter
-@Entity
-public class Route {
+@Getter
+@Entity(name="cruise_status_dict")
+public class CruiseStatusDict {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name")
     private String name;
-
 }

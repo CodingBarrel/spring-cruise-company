@@ -11,14 +11,17 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
-@Entity
-public class Route {
+@Entity(name = "route_point")
+public class RoutePoint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name")
+    @ManyToOne
+    @JoinColumn(name = "route_id")
+    private Route route;
+
     private String name;
 
 }
