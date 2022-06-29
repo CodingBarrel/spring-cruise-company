@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -24,10 +25,10 @@ public class User {
     private String password;
 
     @ManyToOne
-    @JoinColumn(name = "user_role_id")
+    @JoinColumn(name = "role_id")
     private UserRoleDict role;
 
-    private LocalDateTime lastLoginDate;
+    private LocalDateTime lastLoginDateTime;
 
     @Override
     public String toString() {
@@ -35,7 +36,7 @@ public class User {
                 "id=" + id +
                 ", login='" + login + '\'' +
                 ", role=" + role +
-                ", lastLoginDate=" + lastLoginDate +
+                ", lastLogin=" + lastLoginDateTime +
                 '}';
     }
 }

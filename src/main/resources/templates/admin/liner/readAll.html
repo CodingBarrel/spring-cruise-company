@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Read</title>
+</head>
+<body>
+<div th:insert="fragments/header :: header"></div>
+<div th:insert="fragments/navbar :: navbar"></div>
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-10">
+            <h3 th:text="#{linerFindAll}"></h3>
+        </div>
+    </div>
+    <a class="btn btn-outline-info" href="/admin-panel" th:text="#{backToAdminPanel}"></a>
+    <a class="btn btn-info" href="/admin-liner/new" th:text="#{linerInsert}"></a>
+    <table class="table table-bordered">
+        <caption th:text="#{listOfLinersAdmin}"></caption>
+        <tr>
+            <th th:text="#{id}"></th>
+            <th th:text="#{name}"></th>
+            <th th:text="#{passengerCapacity}"></th>
+        </tr>
+        <tr th:each="liner:${linerList}">
+            <td th:text="${liner.id}"></td>
+            <td th:text="${liner.name}"></td>
+            <td th:text="${liner.passengerCapacity}"></td>
+            <td>
+                <a th:href="@{/admin-liner/{id}/edit(id=${liner.id})}" th:text="#{edit}"></a>
+            </td>
+            <td>
+                <form th:method="DELETE" th:action="@{/admin-liner/{id} (id=${liner.id})}">
+                    <input class="btn btn-danger" type="submit" th:value="#{delete}">
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

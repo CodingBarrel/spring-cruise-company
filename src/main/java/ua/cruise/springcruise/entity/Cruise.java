@@ -1,6 +1,7 @@
 package ua.cruise.springcruise.entity;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import ua.cruise.springcruise.entity.dictionary.CruiseStatusDict;
 
 import javax.persistence.*;
@@ -12,10 +13,11 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+@Builder
 @Entity
 public class Cruise {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -29,8 +31,10 @@ public class Cruise {
     @JoinColumn(name = "route_id")
     private Route route;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm:ss")
     private LocalDateTime startDateTime;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm:ss")
     private LocalDateTime endDateTime;
 
     private BigDecimal price;
@@ -39,6 +43,7 @@ public class Cruise {
     @JoinColumn(name = "status_id")
     private CruiseStatusDict status;
 
+    @Column(length = 1024)
     private String description;
 
     private String imageName;

@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Entity
 public class Liner {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
 

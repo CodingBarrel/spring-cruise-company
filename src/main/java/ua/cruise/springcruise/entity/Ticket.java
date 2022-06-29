@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Entity
 public class Ticket {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -28,12 +28,12 @@ public class Ticket {
 
     private int position;
 
-    private String docsImageName;
+    private String imageName;
 
     private BigDecimal price;
 
     @ManyToOne
     @JoinColumn(name = "status_id")
     private TicketStatusDict status;
-    
+
 }

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:insert="fragments/header :: header"></div>
+<div th:insert="fragments/navbar :: navbar"></div>
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-10">
+            <h3 th:text="#{indexPage}"></h3>
+        </div>
+    </div>
+    <h5 th:text="#{welcomeMessage}"></h5>
+    <div class="row row-cols-1 row-cols-lg-3 g-4 py-5">
+        <div class="col">
+            <h4 th:text="#{about}"></h4>
+            <p th:text="#{aboutText}"></p>
+            <a class="d-inline-flex align-items-center" href="/about" th:text="#{more}"></a>
+        </div>
+        <div class="col">
+            <h4 th:text="#{cruiseChoice}"></h4>
+            <p th:text="#{cruiseChoiceText}"></p>
+            <a class="d-inline-flex align-items-center" href="/cruise" th:text="#{choose}"></a>
+        </div>
+        <div class="col">
+            <h4 th:text="#{signUpToday}"></h4>
+            <p th:text="#{signUpTodayText}"></p>
+            <a class="d-inline-flex align-items-center" href="/auth/signUp" th:text="#{signUp}"></a>
+        </div>
+    </div>
+</div>
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>
