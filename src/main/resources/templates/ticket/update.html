@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit</title>
+</head>
+<body>
+<div th:insert="fragments/header :: header"></div>
+<div th:insert="fragments/navbar :: navbar"></div>
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-10">
+            <h3 th:text="#{ticketUpdate}"></h3>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <form th:method="PATCH" th:action="@{/admin-ticket/{id} (id=${ticket.id})}" th:object="${ticket}">
+                <p>
+                    <span th:text="#{id}"></span>
+                    (<span th:text="#{cruise}"></span>)
+                    <span th:text="${ticket.cruise.id}"></span>
+                </p>
+                <p>
+                    <span th:text="#{id}"></span>
+                    (<span th:text="#{user}"></span>)
+                    <span th:text="${ticket.user.id}"></span>
+                </p>
+                <p>
+                    <span th:text="#{price}"></span>
+                    <span th:text="${ticket.price}"></span>
+                </p>
+                <p>
+                    <span th:text="#{documents}"></span>
+                    <a th:href="${ticket.docsImageName}" th:text="${ticket.docsImageName}"></a>
+                </p>
+                <p>
+                    <span th:text="#{status}"></span>
+                    <span th:text="${ticket.status.name}"></span>
+                </p>
+                <div class="mb-3">
+                    <label class="form-label" for="status" th:text="#{updateStatus}"></label>
+                    <select class="form-select" id="status" th:field="*{status.id}">
+                        <option th:each="status : ${statusList}" th:value="${status.id}"
+                                th:text="${status.name}" th:selected="${status.id == ticket.status.id}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <input class="btn btn-primary" type="submit" th:value="#{save}">
+                    <input class="btn btn-secondary" type="reset" th:value="#{save}">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

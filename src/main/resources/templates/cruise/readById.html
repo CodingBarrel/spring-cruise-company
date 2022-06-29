@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Read by id</title>
+</head>
+<body>
+<div th:insert="fragments/header :: header"></div>
+<div th:insert="fragments/navbar :: navbar"></div>
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-10">
+            <h3 th:text="#{cruiseFindById}"></h3>
+        </div>
+    </div>
+    <a class="btn btn-outline-info" href="/cruise" th:text="#{backToAllCruises}"></a>
+    <div class="row mt-2">
+        <div class="col">
+            <div class="row mb-5">
+                <p>
+                    <span th:text="#{name}"></span>:
+                    <span th:text="${cruise.name}"></span>
+                </p>
+                <p>
+                    <span th:text="#{description}"></span>:
+                    <span th:text="${cruise.description}"></span>
+                </p>
+            </div>
+            <div class="row mb-5">
+                <p>
+                    <span th:text="#{startDatetime}"></span>:
+                    <span th:text="${cruise.startDateTime}"></span>
+                </p>
+                <p>
+                    <span th:text="#{endDatetime}"></span>:
+                    <span th:text="${cruise.endDateTime}"></span>
+                </p>
+                <p>
+                    <span th:text="#{liner}"></span>:
+                    <span th:text="${cruise.liner.name}"></span>
+                </p>
+                <p>
+                    <span th:text="#{passengerCapacity}"></span>:
+                    <span th:text="${cruise.liner.passengerCapacity}"></span>
+                </p>
+                <p>
+                    <span th:text="#{price}"></span>:
+                    <span th:text="${cruise.price}"></span> UAH
+                </p>
+            </div>
+            <div class="row mb-5">
+                <p>
+                    <span th:text="#{route}"></span>:
+                    <span th:text="${cruise.route.name}"></span>
+                </p>
+                <ol class="list-group list-group-numbered">
+                    <li th:each="point : ${cruise.route.routePointList}" class="list-group-item"
+                        th:text="${point.name}"></li>
+                </ol>
+            </div>
+            <form method="POST" action="/ticket">
+                <input type="hidden" name="cruise_id" th:value="${cruise.id}">
+                <input class="btn btn-success" type="submit" th:value="#{order}">
+            </form>
+        </div>
+        <div class="col">
+            <img th:src="@{'data/cruise/'+${cruise.imageName}}" style="width:500px" alt="Cruise image">
+        </div>
+    </div>
+</div>
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

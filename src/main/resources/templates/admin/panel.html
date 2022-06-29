@@ -1,0 +1,48 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin panel</title>
+</head>
+<body>
+<div th:insert="fragments/header :: header"></div>
+<div th:insert="fragments/navbar :: navbar"></div>
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-4">
+            <h3><span th:text="#{adminPanel}" th:remove="tag"></span></h3>
+            <div class="row justify-content-center align-items-center mt-3">
+                <a class="btn btn-info" href="/admin-cruise">
+                    <span th:text="#{editCruises}" th:remove="tag"></span></a>
+            </div>
+            <div class="row justify-content-center align-items-center mt-3">
+                <a class="btn btn-info" href="/admin-liner">
+                    <span th:text="#{editLiners}" th:remove="tag"></span></a>
+            </div>
+            <div class="row justify-content-center align-items-center mt-3">
+                <a class="btn btn-info" href="/admin-route">
+                    <span th:text="#{editRoutes}" th:remove="tag"></span></a>
+            </div>
+            <div class="row justify-content-center align-items-center mt-3">
+                <a class="btn btn-info" href="/admin-user">
+                    <span th:text="#{editUsers}" th:remove="tag"></span></a>
+            </div>
+            <div class="row justify-content-center align-items-center mt-3">
+                <a class="btn btn-info" href="/admin-ticket">
+                    <span th:text="#{editTickets}" th:remove="tag"></span></a>
+            </div>
+        </div>
+        <div class="col-2"></div>
+        <div class="col-4 ms-4">
+            <span th:text="#{youModifying}" th:remove="tag"></span>:
+            <p th:each="modifyingEntity : ${modifierList}">
+                <span th:text="#{entityName}" th:remove="tag"></span>
+                <span th:text="${modifyingEntity.entityName}"></span>
+                <span th:text="#{entityId}" th:remove="tag"></span>
+                <span th:text="${modifyingEntity.entityId}"></span>
+            </p>
+        </div>
+    </div>
+</div>
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

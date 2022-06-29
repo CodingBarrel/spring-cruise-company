@@ -1,0 +1,42 @@
+package ua.cruise.springcruise.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import ua.cruise.springcruise.entity.dictionary.UserRoleDict;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    private String login;
+
+    private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private UserRoleDict role;
+
+    private LocalDateTime lastLoginDateTime;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", role=" + role +
+                ", lastLogin=" + lastLoginDateTime +
+                '}';
+    }
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New</title>
+</head>
+<body>
+<div th:insert="fragments/header :: header"></div>
+<div th:insert="fragments/navbar :: navbar"></div>
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-10">
+            <h3 th:text="#{linerInsert}"></h3>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <form method="POST" th:action="@{/admin-liner}" th:object="${liner}">
+                <div class="mb-3">
+                    <label class="form-label" for="name" th:text="#{name}"></label> :
+                    <input class="form-control" name="name" id="name" th:field="*{name}"/>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="passengerCapacity" th:text="#{passengerCapacity}"></label> :
+                    <input class="form-control" id="passengerCapacity" th:field="*{passengerCapacity}"/>
+                </div>
+                <div class="mb-3">
+                    <input class="btn btn-primary" type="submit" th:value="#{insert}">
+                    <input class="btn btn-secondary" type="reset" th:value="#{reset}">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>

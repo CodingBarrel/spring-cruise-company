@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Read</title>
+</head>
+<body>
+<div th:insert="fragments/header :: header"></div>
+<div th:insert="fragments/navbar :: navbar"></div>
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-10">
+            <h3 th:text="#{cruiseFindAll}"></h3>
+        </div>
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <div class="col-10">
+            <form method="GET">
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="start_datetime" th:text="#{startDate}"></label>
+                    <select class="form-select-sm" name="datetime_type">
+                        <option value="le"><=</option>
+                        <option value="ge">>=</option>
+                    </select>
+                    <input class="form-control-sm" type="date" name="start_datetime" id="start_datetime"
+                           value="${requestScope.startDateTime}"><br>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="duration" th:text="#{duration}"></label>
+                    <select class="form-select-sm" name="duration_type">
+                        <option value="le"><=</option>
+                        <option value="ge">>=</option>
+                    </select>
+                    <input class="form-control-sm" type="number" name="duration" id="duration"
+                           value="${requestScope.duration}">
+                    <select class="form-select-sm" name="duration_time_type">
+                        <option value="day" th:text="#{days}"></option>
+                        <option value="week" th:text="#{weeks}"></option>
+                        <option value="month" th:text="#{month}"></option>
+                    </select>
+                    <input th:value="#{search}" class="btn ms-5 btn-secondary" type="submit">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <h5 th:text="#{foundCruises}">: ${requestScope.cruiseCount}</h5>
+    <div th:each="cruise:${cruiseList}" class="cruise-item row mb-2 border-bottom border-3 mt-2">
+        <div class="col col-8 align-items-center justify-content-center px-4 mt-2">
+            <div class="row">
+                <h4><a th:href="@{/cruise/{id} (id=${cruise.id})}" th:text="${cruise.name}">Cruise</a></h4>
+            </div>
+            <div class="row row-cols-auto mt-lg-3 mb-lg-1 justify-content-md-between">
+                <div class="col col-lg-auto">
+                    <span th:text="#{liner}" th:remove="tag"></span>:
+                    <span th:text="${cruise.liner.name}" th:remove="tag"></span>
+                </div>
+                <div class="col col-lg-auto">
+                    <span th:text="#{route}" th:remove="tag"></span>:
+                    <span th:text="${cruise.route.name}" th:remove="tag"></span>
+                </div>
+            </div>
+            <div class="row row-cols-auto justify-content-md-between">
+                <div class="col d-inline-block">
+                    <span th:text="#{startDatetime}" th:remove="tag"></span>: <span
+                        th:text="${cruise.startDateTime}" th:remove="tag">"></span>
+                </div>
+                <div class="col d-inline">
+                    <span th:text="#{endDatetime}" th:remove="tag"></span>:
+                    <span th:text="${cruise.endDateTime}" th:remove="tag"></span>
+                </div>
+                <div class="col d-inline-flex">
+                    <span th:text="#{price}" th:remove="tag"></span>:
+                    <span th:text="${cruise.price}" th:remove="tag"></span>
+                </div>
+            </div>
+        </div>
+        <div class="cruise-img col col-3">
+            <img th:src="@{'/images/'+${cruise.imageName}}" class="img-thumbnail img-fluid" alt="Cruise image">
+        </div>
+    </div>
+</div>
+<div th:insert="fragments/footer :: footer"></div>
+
+</body>
+</html>
