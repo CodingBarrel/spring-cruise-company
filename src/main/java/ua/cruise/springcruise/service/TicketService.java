@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import ua.cruise.springcruise.entity.Cruise;
 import ua.cruise.springcruise.entity.Ticket;
 import ua.cruise.springcruise.entity.dictionary.TicketStatusDict;
 import ua.cruise.springcruise.repository.TicketRepository;
@@ -36,11 +37,13 @@ public class TicketService {
         return ticketRepository.findByUser_Id(id);
     }
 
+    public List<Ticket> findByCruiseActual(Cruise cruise){
+        return ticketRepository.findByCruiseAndStatus_IdLessThanEqual(cruise, 3L);
+    }
+
     @Transactional
     public void create(Ticket ticket){
-        if (!ticketRepository.existsByCruise_IdAndPositionAndStatus_IdLessThanEqual(ticket.getCruise().getId(), ticket.getPosition(), 3L))
             ticketRepository.save(ticket);
-        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ticket already exists");
     }
 
     @Transactional

@@ -6,50 +6,32 @@
             <a class="d-flex align-items-center" href="/static/icon.svg" width="100" alt="Cruise">
             </a>
             <ul class="nav col-md-auto">
-                <li><a class="nav-link link-dark px-2" href="/admin-panel">
-                    <span th:text="#{adminPanel}" th:remove="tag"></span>
-                </a>
-                </li>
-                <li><a class="nav-link link-dark px-2" href="/">
-                    <span th:text="#{indexPage}" th:remove="tag"></span>
-                </a></li>
-                <li><a class="nav-link link-dark px-2" href="/cruise">
-                    <span th:text="#{cruiseFindAll}" th:remove="tag"></span>
-                </a></li>
-                <li><a class="nav-link link-dark px-2" href="/about">
-                    <span th:text="#{about}" th:remove="tag"></span>
-                </a></li>
+                <li><a class="nav-link link-dark px-2" href="/admin-panel" th:text="#{adminPanel}"></a></li>
+                <li><a class="nav-link link-dark px-2" href="/index" th:text="#{indexPage}"></a></li>
+                <li><a class="nav-link link-dark px-2" href="/cruise" th:text="#{cruiseFindAll}"></a></li>
+                <li><a class="nav-link link-dark px-2" href="/about" th:text="#{about}"></a></li>
                 <li>
                     <div class="dropdown">
                         <button class="btn dropdown-toggle" type="button" id="langMenuButton"
-                                aria-expanded="false" data-bs-toggle="dropdown">
-                            <span th:text="#{language}" th:remove="tag"></span>
+                                aria-expanded="false" data-bs-toggle="dropdown" th:text="#{language}">
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="langMenuButton">
                             <li><a class="dropdown-item"
-                                   href="/index?lang=uk"><span
-                                    class="fi fi-ua"></span> Українська</a>
+                                   href="/index?lang=uk"><span class="fi fi-ua"></span> Українська</a>
                             </li>
                             <li><a class="dropdown-item"
-                                   href="/index?lang=en"><span
-                                    class="fi fi-gb"></span> English</a>
+                                   href="/index?lang=en"><span class="fi fi-gb"></span> English</a>
                             </li>
                         </ul>
                     </div>
                 </li>
-                <li><a class="nav-link link-dark px-2"
-                       href="${pageContext.request.contextPath}/pages/ticket?action=find-my-tickets">
-                    <span th:text="#{myTickets}" th:remove="tag"></span>
-                    [${sessionScope.loggedUser.login}]</a></li>
+                <li><a class="nav-link link-dark px-2" href="/ticket" th:text="#{myTickets}">
+                    [${sessionScope.loggedUser.login}]</a>
+                </li>
             </ul>
             <div class="col-md-auto text-end">
-                <a class="btn btn-outline-primary"
-                   href="${pageContext.request.contextPath}/pages/sign-out">
-                    <span th:text="#{SignOut}" th:remove="tag"></span>
-                </a>
-                <a class="btn btn-primary" href="${pageContext.request.contextPath}/pages/auth">
-                    <span th:text="#{signIn}" th:remove="tag"></span>
-                </a>
+                <a class="btn btn-outline-primary" href="/auth/signOut" th:text="#{SignOut}"></a>
+                <a class="btn btn-primary" href="/auth/signIn" th:text="#{signIn}"></a>
             </div>
         </header>
     </div>

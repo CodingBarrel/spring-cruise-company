@@ -6,7 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import ua.cruise.springcruise.entity.Cruise;
 import ua.cruise.springcruise.entity.Ticket;
+import ua.cruise.springcruise.service.CruiseService;
 import ua.cruise.springcruise.service.TicketService;
 
 import javax.servlet.http.HttpSession;
@@ -16,12 +18,14 @@ import java.util.List;
 @RequestMapping("/ticket")
 public class TicketController {
     private final TicketService ticketService;
+    private final CruiseService cruiseService;
 
     private static final String REDIRECT_URL = "redirect:admin-route/";
 
     @Autowired
-    public TicketController(TicketService ticketService) {
+    public TicketController(TicketService ticketService, CruiseService cruiseService) {
         this.ticketService = ticketService;
+        this.cruiseService = cruiseService;
     }
 
     @GetMapping("")
@@ -48,9 +52,12 @@ public class TicketController {
         return REDIRECT_URL;
     }
 
-    @GetMapping("/new")
-    public String createForm(@ModelAttribute("ticket") Ticket ticket) {
-        return "admin/ticket/create";
+    @GetMapping("{id}/new")
+    public String createForm(@ModelAttribute("ticket") Ticket ticket, @PathVariable("id") Long id, Model model) {
+        Cruise cruise = cruiseService.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+        List<Ticket> ticketList = ticketService.findByCruiseActual(cruise);
+        model.addAttribute("ticketList", ticketList);
+        return "ticket/create";
     }
 
     @PostMapping()

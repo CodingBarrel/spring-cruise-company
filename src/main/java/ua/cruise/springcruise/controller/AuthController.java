@@ -22,7 +22,7 @@ public class AuthController {
 
     @GetMapping("/signUp")
     public String signUpForm(@ModelAttribute("user") User user) {
-        return "admin/user/create";
+        return "user/create";
     }
 
     @PostMapping("/signUp")
@@ -37,7 +37,7 @@ public class AuthController {
 
     @GetMapping("/signIn")
     public String signInForm(@ModelAttribute("user") User user) {
-        return "admin/user/create";
+        return "user/login";
     }
 
     @PostMapping("/signIn")

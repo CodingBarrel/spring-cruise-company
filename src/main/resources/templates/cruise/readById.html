@@ -58,10 +58,7 @@
                         th:text="${point.name}"></li>
                 </ol>
             </div>
-            <form method="POST" action="/ticket">
-                <input type="hidden" name="cruise_id" th:value="${cruise.id}">
-                <input class="btn btn-success" type="submit" th:value="#{order}">
-            </form>
+            <a class="btn btn-success" th:href="@{/ticket/{id}/new (id=${cruise.id})}" th:text="#{order}"></a>
         </div>
         <div class="col">
             <img th:src="@{'data/cruise/'+${cruise.imageName}}" style="width:500px" alt="Cruise image">
