@@ -58,6 +58,11 @@ public class CruiseService {
         return statusDictRepository.findAll();
     }
 
+    public CruiseStatus findStatusById(long id){
+        return statusDictRepository.findById(id).orElseThrow( () ->
+                new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
+    }
+
     public void delete(long id){
         cruiseRepository.deleteById(id);
     }

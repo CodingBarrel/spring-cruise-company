@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ua.cruise.springcruise.entity.User;
+import ua.cruise.springcruise.util.Constants;
+import ua.cruise.springcruise.util.EntityMapper;
 import ua.cruise.springcruise.service.UserService;
 
 @Controller
@@ -25,7 +27,9 @@ public class AuthController {
     }
 
     @PostMapping("/signUp")
-    public String signUp(@ModelAttribute("user") User user) {
+    public String signUp(@ModelAttribute("userDTO") UserDTO userDTO) {
+        User user = mapper.dtoToUser(userDTO);
+        user.setRole(userService.findRoleById(Constants.USER_DEFAULT_ROLE_ID));
         try {
             userService.create(user);
         } catch (ResponseStatusException ex) {

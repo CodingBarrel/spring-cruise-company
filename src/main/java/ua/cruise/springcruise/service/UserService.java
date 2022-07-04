@@ -59,4 +59,9 @@ public class UserService{
     public List<UserRole> findRoleDict(){
         return roleDictRepository.findAll();
     }
+
+    public UserRole findRoleById(long id){
+        return roleDictRepository.findById(id).orElseThrow( () ->
+                new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
+    }
 }

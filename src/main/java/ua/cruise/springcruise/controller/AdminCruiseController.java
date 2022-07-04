@@ -14,6 +14,7 @@ import ua.cruise.springcruise.entity.dictionary.CruiseStatus;
 import ua.cruise.springcruise.service.CruiseService;
 import ua.cruise.springcruise.service.LinerService;
 import ua.cruise.springcruise.service.RouteService;
+import ua.cruise.springcruise.util.Constants;
 
 import java.util.List;
 
@@ -94,10 +95,9 @@ public class AdminCruiseController {
 
     @PostMapping()
     public String create(@ModelAttribute("cruiseDTO") CruiseDTO cruiseDTO) {
-        cruiseService.findByName(cruiseDTO.getName()).ifPresent(c -> {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cruise already exists");
-        });
-        cruiseService.create(cruiseDTO);
+        Cruise cruise = entityMapper.dtoToCruise(cruiseDTO);
+        cruise.setStatus(cruiseService.findStatusById(Constants.CRUISE_DEFAULT_STATUS_ID));
+        cruiseService.create(cruise);
         return REDIRECT_URL;
     }
 

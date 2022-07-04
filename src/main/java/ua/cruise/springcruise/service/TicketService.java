@@ -69,4 +69,9 @@ public class TicketService {
         return statusDictRepository.findAll();
     }
 
+    public TicketStatus findStatusById(long id){
+        return statusDictRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
+    }
+
 }
