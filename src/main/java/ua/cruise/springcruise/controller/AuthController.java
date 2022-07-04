@@ -1,7 +1,6 @@
 package ua.cruise.springcruise.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,7 +12,7 @@ import ua.cruise.springcruise.service.UserService;
 public class AuthController {
     private final UserService userService;
 
-    private static final String REDIRECT_URL = "redirect:auth/";
+    private static final String REDIRECT_URL = "redirect:/";
 
     @Autowired
     public AuthController(UserService userService) {
@@ -32,25 +31,6 @@ public class AuthController {
         } catch (ResponseStatusException ex) {
             ex.printStackTrace();
         }
-        return REDIRECT_URL;
-    }
-
-    @GetMapping("/signIn")
-    public String signInForm(@ModelAttribute("user") User user) {
-        return "user/login";
-    }
-
-    @PostMapping("/signIn")
-    public String signIn(@ModelAttribute("user") User user) {
-        User foundUser;
-        try {
-            foundUser = userService.findByLogin(user.getLogin()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
-        } catch (ResponseStatusException ex) {
-            ex.printStackTrace();
-            return "/";
-        }
-        if (user.getPassword().equals(foundUser.getPassword()))
-            System.out.println(user.getLogin() + "AUTHORIZED");
         return REDIRECT_URL;
     }
 
