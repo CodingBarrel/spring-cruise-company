@@ -15,7 +15,7 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-6">
-            <form th:method="PATCH" th:action="@{/admin-cruise/{id} (id=${cruise.id})}" th:object="${cruise}">
+            <form th:method="PATCH" th:action="@{/admin-cruise/{id} (id=${cruiseDTO.id})}" th:object="${cruiseDTO}">
                 <div class="mb-3">
                     <label class="form-label" for="name" th:text="#{name}"></label> :
                     <input class="form-control" name="name" id="name" th:field="*{name}"/>
@@ -24,14 +24,14 @@
                     <label class="form-label" for="liner" th:text="#{liner}"></label> :
                     <select class="form-select" id="liner" th:field="*{liner.id}">
                         <option th:each="liner : ${linerList}" th:value="${liner.id}"
-                                th:text="${liner.name}" th:selected="${liner.id == cruise.liner.id}"></option>
+                                th:text="${liner.name}" th:selected="${liner.id == cruiseDTO.liner.id}"></option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="route" th:text="#{route}"></label> :
                     <select class="form-select" id="route" th:field="*{route.id}">
                         <option th:each="route : ${routeList}" th:value="${route.id}"
-                                th:text="${route.name}" th:selected="${route.id == cruise.route.id}"></option>
+                                th:text="${route.name}" th:selected="${route.id == cruiseDTO.route.id}"></option>
                     </select>
                 </div>
                 <div class="mb-3">
@@ -61,7 +61,7 @@
                     <label class="form-label" for="status" th:text="#{status}"></label> :
                     <select class="form-select" id="status" th:field="*{status.id}">
                         <option th:each="status : ${statusList}" th:value="${status.id}"
-                                th:text="${status.name}" th:selected="${status.id == cruise.status.id}"></option>
+                                th:text="${status.name}" th:selected="${status.id == cruiseDTO.status.id}"></option>
                     </select>
                 </div>
                 <div class="mb-3">

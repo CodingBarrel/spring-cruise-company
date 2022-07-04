@@ -8,9 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import ua.cruise.springcruise.dto.TicketDTO;
 import ua.cruise.springcruise.entity.Cruise;
 import ua.cruise.springcruise.entity.Ticket;
 import ua.cruise.springcruise.entity.User;
+import ua.cruise.springcruise.util.Constants;
+import ua.cruise.springcruise.util.EntityMapper;
 import ua.cruise.springcruise.service.CruiseService;
 import ua.cruise.springcruise.service.TicketService;
 
@@ -21,13 +24,15 @@ import java.util.List;
 public class TicketController {
     private final TicketService ticketService;
     private final CruiseService cruiseService;
+    private final EntityMapper mapper;
 
     private static final String REDIRECT_URL = "redirect:admin-route/";
 
     @Autowired
-    public TicketController(TicketService ticketService, CruiseService cruiseService) {
+    public TicketController(TicketService ticketService, CruiseService cruiseService, EntityMapper mapper) {
         this.ticketService = ticketService;
         this.cruiseService = cruiseService;
+        this.mapper = mapper;
     }
 
     @GetMapping("")
@@ -42,12 +47,15 @@ public class TicketController {
     @GetMapping("/{id}/edit")
     public String updateForm(@PathVariable Long id, Model model) {
         Ticket ticket = ticketService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ticket not found"));
-        model.addAttribute("ticket", ticket);
+        TicketDTO ticketDTO = mapper.ticketToDTO(ticket);
+        model.addAttribute("ticketDTO", ticketDTO);
         return "admin/ticket/update";
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("ticket") Ticket ticket, @PathVariable("id") Long id) {
+    public String update(@PathVariable("id") Long id, @ModelAttribute("ticketDTO") TicketDTO ticketDTO) {
+        Ticket ticket = mapper.dtoToTicket(ticketDTO);
+        ticket.setId(id);
         try {
             ticketService.update(ticket);
         } catch (ResponseStatusException ex) {
@@ -57,15 +65,19 @@ public class TicketController {
     }
 
     @GetMapping("{id}/new")
-    public String createForm(@ModelAttribute("ticket") Ticket ticket, @PathVariable("id") Long id, Model model) {
+    public String createForm(@PathVariable("id") Long id, Model model) {
+        TicketDTO ticketDTO = new TicketDTO();
         Cruise cruise = cruiseService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
         List<Ticket> ticketList = ticketService.findByCruiseActual(cruise);
+        model.addAttribute("ticketDTO", ticketDTO);
         model.addAttribute("ticketList", ticketList);
         return "ticket/create";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("ticket") Ticket ticket) {
+    public String create(@ModelAttribute("ticketDTO") TicketDTO ticketDTO) {
+        Ticket ticket = mapper.dtoToTicket(ticketDTO);
+        ticket.setStatus(ticketService.findStatusById(Constants.TICKET_DEFAULT_STATUS_ID));
         try {
             ticketService.create(ticket);
         } catch (ResponseStatusException ex) {

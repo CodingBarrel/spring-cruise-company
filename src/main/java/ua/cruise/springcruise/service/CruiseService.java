@@ -5,12 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import ua.cruise.springcruise.dto.CruiseDTO;
 import ua.cruise.springcruise.entity.Cruise;
 import ua.cruise.springcruise.entity.dictionary.CruiseStatus;
 import ua.cruise.springcruise.repository.CruiseRepository;
 import ua.cruise.springcruise.repository.dict.CruiseStatusRepository;
-import ua.cruise.springcruise.util.CruiseMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,13 +16,11 @@ import java.util.Optional;
 @Service
 public class CruiseService {
     private final CruiseRepository cruiseRepository;
-    private final CruiseMapper cruiseMapper;
     private final CruiseStatusRepository statusDictRepository;
 
     @Autowired
-    public CruiseService(CruiseRepository cruiseRepository, CruiseMapper cruiseMapper, CruiseStatusRepository statusDictRepository) {
+    public CruiseService(CruiseRepository cruiseRepository, CruiseStatusRepository statusDictRepository) {
         this.cruiseRepository = cruiseRepository;
-        this.cruiseMapper = cruiseMapper;
         this.statusDictRepository = statusDictRepository;
     }
 
@@ -41,20 +37,19 @@ public class CruiseService {
     }
 
     @Transactional
-    public void update(CruiseDTO cruiseDTO){
-        Cruise cruise = cruiseMapper.DTOtoCruise(cruiseDTO);
-        cruise.setStatus(statusDictRepository.findById(cruiseDTO.getStatus().getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Status not found")));
+    public void update(Cruise cruise){
+        //cruise.setStatus(statusDictRepository.findById(cruiseDTO.getStatus().getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Status not found")));
         cruiseRepository.save(cruise);
     }
 
     @Transactional
-    public void create(CruiseDTO cruiseDTO){
-        Cruise cruise = cruiseMapper.DTOtoCruise(cruiseDTO);
-        cruise.setStatus(statusDictRepository.findById(1L).orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Status not found")));
+    public void create(Cruise cruise){
+        //Cruise cruise = cruiseMapper.DTOtoCruise(cruiseDTO);
+       // cruise.setStatus(statusDictRepository.findById(1L).orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Status not found")));
         cruiseRepository.save(cruise);
     }
 
-    public List<CruiseStatus> findStatusDict(){
+    public List<CruiseStatus> findAllStatuses(){
         return statusDictRepository.findAll();
     }
 

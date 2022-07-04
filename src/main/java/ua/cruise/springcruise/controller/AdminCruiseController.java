@@ -11,6 +11,7 @@ import ua.cruise.springcruise.entity.Cruise;
 import ua.cruise.springcruise.entity.Liner;
 import ua.cruise.springcruise.entity.Route;
 import ua.cruise.springcruise.entity.dictionary.CruiseStatus;
+import ua.cruise.springcruise.util.EntityMapper;
 import ua.cruise.springcruise.service.CruiseService;
 import ua.cruise.springcruise.service.LinerService;
 import ua.cruise.springcruise.service.RouteService;
@@ -24,15 +25,17 @@ public class AdminCruiseController {
     private final CruiseService cruiseService;
     private final LinerService linerService;
     private final RouteService routeService;
+    private final EntityMapper entityMapper;
 
 
     private static final String REDIRECT_URL = "redirect:/admin-cruise";
 
     @Autowired
-    public AdminCruiseController(CruiseService cruiseService, LinerService linerService, RouteService routeService) {
+    public AdminCruiseController(CruiseService cruiseService, LinerService linerService, RouteService routeService, EntityMapper entityMapper) {
         this.cruiseService = cruiseService;
         this.linerService = linerService;
         this.routeService = routeService;
+        this.entityMapper = entityMapper;
     }
 
     @GetMapping("")
@@ -42,31 +45,27 @@ public class AdminCruiseController {
         return "admin/cruise/readAll";
     }
 
-    @GetMapping("/{id}")
-    public String readById(@PathVariable Long id, Model model) {
-        Cruise cruise = cruiseService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cruise not found"));
-        model.addAttribute("cruise", cruise);
-        return "admin/cruise/readById";
-    }
-
     @GetMapping("/{id}/edit")
-    public String updateForm(@PathVariable Long id, @ModelAttribute("cruiseDTO") CruiseDTO cruiseDTO, Model model) {
+    public String updateForm(@PathVariable Long id, Model model) {
         Cruise cruise = cruiseService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cruise not found"));
+        CruiseDTO cruiseDTO = entityMapper.cruiseToDTO(cruise);
         List<Liner> linerList = linerService.findAll();
         List<Route> routeList = routeService.findAll();
-        List<CruiseStatus> statusList = cruiseService.findStatusDict();
-        model.addAttribute("cruise", cruise);
+        List<CruiseStatus> statusList = cruiseService.findAllStatuses();
+        model.addAttribute("cruiseDTO", cruiseDTO);
         model.addAttribute("linerList", linerList);
         model.addAttribute("routeList", routeList);
         model.addAttribute("statusList", statusList);
+
         return "admin/cruise/update";
     }
 
     @PatchMapping("/{id}")
-    public String update(@PathVariable("id") long id,@ModelAttribute("cruiseDTO") CruiseDTO cruiseDTO) {
+    public String update(@PathVariable("id") long id, @ModelAttribute("cruiseDTO") CruiseDTO cruiseDTO) {
         try {
-            cruiseDTO.setId(id);
-            cruiseService.update(cruiseDTO);
+            Cruise cruise = entityMapper.dtoToCruise(cruiseDTO);
+            cruise.setId(id);
+            cruiseService.update(cruise);
         } catch (ResponseStatusException ex) {
             ex.printStackTrace();
         }
@@ -74,22 +73,23 @@ public class AdminCruiseController {
     }
 
     @GetMapping("/new")
-    public String createForm(@ModelAttribute("cruiseDTO") CruiseDTO cruiseDTO, Model model) {
+    public String createForm(Model model) {
+        CruiseDTO cruiseDTO = new CruiseDTO();
         List<Liner> linerList;
         List<Route> routeList;
         List<CruiseStatus> statusList;
         try {
             linerList = linerService.findAll();
             routeList = routeService.findAll();
-            statusList = cruiseService.findStatusDict();
+            statusList = cruiseService.findAllStatuses();
         } catch (ResponseStatusException ex) {
             ex.printStackTrace();
             return "/error";
         }
+        model.addAttribute("cruiseDTO", cruiseDTO);
         model.addAttribute("linerList", linerList);
         model.addAttribute("routeList", routeList);
         model.addAttribute("statusList", statusList);
-
         return "admin/cruise/create";
     }
 

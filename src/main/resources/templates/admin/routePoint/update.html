@@ -21,17 +21,17 @@
             <th th:text="#{id}"></th>
             <th th:text="#{name}"></th>
         </tr>
-        <tr th:each="routePoint : ${routePointList}">
-            <td th:text="${routePoint.id}"></td>
+        <tr th:each="routePointListEl : ${routePointList}">
+            <td th:text="${routePointListEl.id}"></td>
             <td>
-                <div th:if="${routePoint.id == pointId}">
-                    <form th:method="PATCH" th:action="@{/admin-routepoint/{id} (id = ${routePoint.id})}" th:object="${routePoint}">
+                <div th:if="${routePointListEl.id == routePointDTO.id}">
+                    <form th:method="PATCH" th:action="@{/admin-route/{routeId}/point/{pointId} (routeId = ${routePointDTO.route.id}, pointId=${routePointDTO.id})}" th:object="${routePointDTO}">
                         <input id="name" th:field="*{name}">
                         <input class="btn btn-primary" type="submit" th:value="#{save}">
                     </form>
                 </div>
-                <div th:unless="${routePoint.id == pointId}">
-                    <span th:text="${routePoint.name}"></span>
+                <div th:unless="${routePointListEl.id == routePointDTO.id}">
+                    <span th:text="${routePointListEl.name}"></span>
                 </div>
             </td>
         </tr>

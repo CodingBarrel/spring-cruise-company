@@ -15,7 +15,7 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-6">
-            <form th:method="PATCH" th:action="@{/admin-user/{id} (id=${user.id})}" th:object="${user}">
+            <form th:method="PATCH" th:action="@{/admin-user/{id} (id=${userDTO.id})}" th:object="${userDTO}">
                 <div class="mb-3">
                     <label for="login" th:text="#{login}"></label> :
                     <input readonly id="login" th:field="*{login}">
@@ -24,7 +24,7 @@
                     <label class="form-label" for="roles" th:text="#{role}"></label> :
                     <select class="form-select" name="roleId" id="roles">
                         <option th:each="role : ${roleDict}" th:value="${role.id}" th:text="${role.name}"
-                                th:selected="${role.id == user.role.id}"></option>
+                                th:selected="${role.id == userDTO.role.id}"></option>
                     </select>
                 </div>
                 <div class="mb-3">

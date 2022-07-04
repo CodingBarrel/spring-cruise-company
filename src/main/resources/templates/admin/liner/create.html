@@ -15,7 +15,7 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-6">
-            <form method="POST" th:action="@{/admin-liner}" th:object="${liner}">
+            <form method="POST" th:action="@{/admin-liner}" th:object="${linerDTO}">
                 <div class="mb-3">
                     <label class="form-label" for="name" th:text="#{name}"></label> :
                     <input class="form-control" name="name" id="name" th:field="*{name}"/>

@@ -9,8 +9,6 @@ import ua.cruise.springcruise.entity.Route;
 import ua.cruise.springcruise.repository.RouteRepository;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class RouteService {
@@ -25,29 +23,22 @@ public class RouteService {
         return routeRepository.findAll();
     }
 
-    public Optional<Route> findById(long id){
-        return routeRepository.findById(id);
+    public Route findById(long id){
+        return routeRepository.findById(id).orElseThrow( () ->
+                new ResponseStatusException(HttpStatus.BAD_REQUEST, "Route not found"));
     }
 
     @Transactional
     public void update(Route route){
-        Optional<Route> foundRoute = routeRepository.findByName(route.getName());
-        if (foundRoute.isPresent()&& !Objects.equals(route.getId(), foundRoute.get().getId())){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
         routeRepository.save(route);
     }
 
     @Transactional
     public void create(Route route){
-        if (routeRepository.existsByName(route.getName()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         routeRepository.save(route);
     }
 
     public void delete(long id){
-        if (!routeRepository.existsById(id))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         routeRepository.deleteById(id);
     }
 }
