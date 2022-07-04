@@ -10,7 +10,7 @@ import ua.cruise.springcruise.dto.CruiseDTO;
 import ua.cruise.springcruise.entity.Cruise;
 import ua.cruise.springcruise.entity.Liner;
 import ua.cruise.springcruise.entity.Route;
-import ua.cruise.springcruise.entity.dictionary.CruiseStatusDict;
+import ua.cruise.springcruise.entity.dictionary.CruiseStatus;
 import ua.cruise.springcruise.service.CruiseService;
 import ua.cruise.springcruise.service.LinerService;
 import ua.cruise.springcruise.service.RouteService;
@@ -53,7 +53,7 @@ public class AdminCruiseController {
         Cruise cruise = cruiseService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cruise not found"));
         List<Liner> linerList = linerService.findAll();
         List<Route> routeList = routeService.findAll();
-        List<CruiseStatusDict> statusList = cruiseService.findStatusDict();
+        List<CruiseStatus> statusList = cruiseService.findStatusDict();
         model.addAttribute("cruise", cruise);
         model.addAttribute("linerList", linerList);
         model.addAttribute("routeList", routeList);
@@ -76,7 +76,7 @@ public class AdminCruiseController {
     public String createForm(@ModelAttribute("cruiseDTO") CruiseDTO cruiseDTO, Model model) {
         List<Liner> linerList;
         List<Route> routeList;
-        List<CruiseStatusDict> statusList;
+        List<CruiseStatus> statusList;
         try {
             linerList = linerService.findAll();
             routeList = routeService.findAll();

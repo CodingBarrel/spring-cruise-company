@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Read</title>
+</head>
+<body>
+<div th:insert="fragments/header :: header"></div>
+<div th:insert="fragments/navbar :: navbar"></div>
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-10">
+            <h3 th:text="#{ticketFindMy}"></h3>
+        </div>
+    </div>
+    <table class="table table-bordered">
+        <caption th:text="#{listOfTickets}"></caption>
+        <tr>
+            <th th:text="#{id}"></th>
+            <th th:text="#{name}"></th>
+            <th th:text="#{position}"></th>
+            <th th:text="#{documents}"></th>
+            <th th:text="#{price}"></th>
+            <th th:text="#{status}"></th>
+        </tr>
+        <tr th:each="ticket : ${ticketList}">
+            <td th:text="${ticket.id}"></td>
+            <td>
+                <span th:text="${ticket.cruise.name}"></span>
+                [<a th:href="@{/cruise/{id} (id = ${ticket.cruise.id})}" th:text="#{view}"></a>]
+            </td>
+            <td th:text="${ticket.position}"></td>
+            <td><a th:href="@{/data/docs/{docsName} (docsName=${ticket.docsImageName})}" th:text="#{view}"></a></td>
+            <td th:text="${ticket.price} + UAH"></td>
+            <td th:text="${ticket.status.name}"></td>
+            <td>
+                <div class="row">
+                    <div class="col">
+                        <form action="/ticket">
+                            <input type="hidden" name="action" value="pay">
+                            <input type="hidden" name="id" value="${ticket.id}">
+                            <input class="btn btn-primary" type="submit" th:value="#{pay}">
+                        </form>
+                    </div>
+                    <div class="col">
+                        <form action="/ticket">
+                            <input type="hidden" name="action" value="cancel">
+                            <input type="hidden" name="id" value="${ticket.id}">
+                            <input class="btn btn-secondary" type="submit" th:value="#{cancel}">
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>
