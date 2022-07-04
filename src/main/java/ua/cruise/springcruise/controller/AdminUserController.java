@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ua.cruise.springcruise.entity.User;
+import ua.cruise.springcruise.entity.dictionary.UserRole;
 import ua.cruise.springcruise.service.UserService;
 
 import java.util.List;
@@ -33,7 +34,9 @@ public class AdminUserController {
     @GetMapping("/{id}/edit")
     public String updateForm(@PathVariable Long id, Model model) {
         User user = userService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        List<UserRole> roleDict = userService.findRoleDict();
         model.addAttribute("user", user);
+        model.addAttribute("roleDict", roleDict);
         return "admin/user/update";
     }
 

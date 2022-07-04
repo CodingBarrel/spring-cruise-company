@@ -1,9 +1,7 @@
 package ua.cruise.springcruise.entity.dictionary;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,12 +11,18 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Setter
 @Getter
-@Entity(name="user_role_dict")
-public class UserRoleDict {
+@ToString
+@Entity(name="user_role")
+public class UserRole implements GrantedAuthority {
+
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
 
     private String name;
 
+    @Override
+    public String getAuthority() {
+        return name;
+    }
 }

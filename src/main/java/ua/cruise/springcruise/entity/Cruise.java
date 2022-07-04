@@ -2,7 +2,7 @@ package ua.cruise.springcruise.entity;
 
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-import ua.cruise.springcruise.entity.dictionary.CruiseStatusDict;
+import ua.cruise.springcruise.entity.dictionary.CruiseStatus;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -41,7 +41,7 @@ public class Cruise {
 
     @ManyToOne
     @JoinColumn(name = "status_id")
-    private CruiseStatusDict status;
+    private CruiseStatus status;
 
     @Column(length = 1024)
     private String description;

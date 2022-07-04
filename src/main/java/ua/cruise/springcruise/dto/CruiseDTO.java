@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ua.cruise.springcruise.entity.Liner;
 import ua.cruise.springcruise.entity.Route;
-import ua.cruise.springcruise.entity.dictionary.CruiseStatusDict;
+import ua.cruise.springcruise.entity.dictionary.CruiseStatus;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -42,7 +42,7 @@ public class CruiseDTO {
     @NotNull
     private BigDecimal price;
 
-    private CruiseStatusDict status;
+    private CruiseStatus status;
 
     @NotBlank
     private String description;

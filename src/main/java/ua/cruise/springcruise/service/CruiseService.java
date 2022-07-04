@@ -7,9 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import ua.cruise.springcruise.dto.CruiseDTO;
 import ua.cruise.springcruise.entity.Cruise;
-import ua.cruise.springcruise.entity.dictionary.CruiseStatusDict;
+import ua.cruise.springcruise.entity.dictionary.CruiseStatus;
 import ua.cruise.springcruise.repository.CruiseRepository;
-import ua.cruise.springcruise.repository.dict.CruiseStatusDictRepository;
+import ua.cruise.springcruise.repository.dict.CruiseStatusRepository;
 import ua.cruise.springcruise.util.CruiseMapper;
 
 import java.util.List;
@@ -19,10 +19,10 @@ import java.util.Optional;
 public class CruiseService {
     private final CruiseRepository cruiseRepository;
     private final CruiseMapper cruiseMapper;
-    private final CruiseStatusDictRepository statusDictRepository;
+    private final CruiseStatusRepository statusDictRepository;
 
     @Autowired
-    public CruiseService(CruiseRepository cruiseRepository, CruiseMapper cruiseMapper, CruiseStatusDictRepository statusDictRepository) {
+    public CruiseService(CruiseRepository cruiseRepository, CruiseMapper cruiseMapper, CruiseStatusRepository statusDictRepository) {
         this.cruiseRepository = cruiseRepository;
         this.cruiseMapper = cruiseMapper;
         this.statusDictRepository = statusDictRepository;
@@ -54,7 +54,7 @@ public class CruiseService {
         cruiseRepository.save(cruise);
     }
 
-    public List<CruiseStatusDict> findStatusDict(){
+    public List<CruiseStatus> findStatusDict(){
         return statusDictRepository.findAll();
     }
 

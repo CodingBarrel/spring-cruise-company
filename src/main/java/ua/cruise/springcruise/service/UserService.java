@@ -2,26 +2,29 @@ package ua.cruise.springcruise.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import ua.cruise.springcruise.entity.User;
-import ua.cruise.springcruise.entity.dictionary.UserRoleDict;
+import ua.cruise.springcruise.entity.dictionary.UserRole;
 import ua.cruise.springcruise.repository.UserRepository;
-import ua.cruise.springcruise.repository.dict.UserRoleDictRepository;
+import ua.cruise.springcruise.repository.dict.UserRoleRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService{
     private final UserRepository userRepository;
-    private final UserRoleDictRepository roleDictRepository;
+    private final UserRoleRepository roleDictRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserRoleDictRepository roleDictRepository) {
+    public UserService(UserRepository userRepository, UserRoleRepository roleDictRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleDictRepository = roleDictRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> findAll() {
@@ -41,7 +44,8 @@ public class UserService {
         userRepository.findByLogin(user.getLogin()).ifPresent(u -> {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists");
         });
-        user.setRole(roleDictRepository.findById(1L).orElseThrow( () -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(roleDictRepository.findById(2L).orElseThrow( () -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)));
         userRepository.save(user);
     }
 
@@ -52,7 +56,7 @@ public class UserService {
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not existst");
     }
 
-    public List<UserRoleDict> findRoleDict(){
+    public List<UserRole> findRoleDict(){
         return roleDictRepository.findAll();
     }
 }

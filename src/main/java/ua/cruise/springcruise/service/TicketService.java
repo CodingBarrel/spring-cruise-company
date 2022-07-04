@@ -7,9 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import ua.cruise.springcruise.entity.Cruise;
 import ua.cruise.springcruise.entity.Ticket;
-import ua.cruise.springcruise.entity.dictionary.TicketStatusDict;
+import ua.cruise.springcruise.entity.dictionary.TicketStatus;
 import ua.cruise.springcruise.repository.TicketRepository;
-import ua.cruise.springcruise.repository.dict.TicketStatusDictRepository;
+import ua.cruise.springcruise.repository.dict.TicketStatusRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +17,10 @@ import java.util.Optional;
 @Service
 public class TicketService {
     private final TicketRepository ticketRepository;
-    private final TicketStatusDictRepository statusDictRepository;
+    private final TicketStatusRepository statusDictRepository;
 
     @Autowired
-    public TicketService(TicketRepository ticketRepository, TicketStatusDictRepository statusDictRepository) {
+    public TicketService(TicketRepository ticketRepository, TicketStatusRepository statusDictRepository) {
         this.ticketRepository = ticketRepository;
         this.statusDictRepository = statusDictRepository;
     }
@@ -65,7 +65,7 @@ public class TicketService {
         ticketRepository.save(ticket);
     }
 
-    public List<TicketStatusDict> findStatusDict(){
+    public List<TicketStatus> findStatusDict(){
         return statusDictRepository.findAll();
     }
 

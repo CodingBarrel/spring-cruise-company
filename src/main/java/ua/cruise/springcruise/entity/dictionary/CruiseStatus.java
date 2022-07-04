@@ -1,9 +1,6 @@
 package ua.cruise.springcruise.entity.dictionary;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,8 +10,9 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Setter
 @Getter
-@Entity(name="cruise_status_dict")
-public class CruiseStatusDict {
+@ToString
+@Entity(name="cruise_status")
+public class CruiseStatus {
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
