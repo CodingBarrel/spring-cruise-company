@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:fragment="navbar">
     <div class="container">
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
             <a class="d-flex align-items-center" href="/static/icon.svg" width="100" alt="Cruise">
             </a>
             <ul class="nav col-md-auto">
-                <li><a class="nav-link link-dark px-2" href="/admin-panel" th:text="#{adminPanel}"></a></li>
-                <li><a class="nav-link link-dark px-2" href="/index" th:text="#{indexPage}"></a></li>
+                <li sec:authorize="hasAnyRole('OWNER','ADMIN')" ><a class="nav-link link-dark px-2" href="/admin-panel" th:text="#{adminPanel}"></a></li>
+                <li><a class="nav-link link-dark px-2" href="/" th:text="#{indexPage}"></a></li>
                 <li><a class="nav-link link-dark px-2" href="/cruise" th:text="#{cruiseFindAll}"></a></li>
                 <li><a class="nav-link link-dark px-2" href="/about" th:text="#{about}"></a></li>
                 <li>
@@ -17,21 +18,20 @@
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="langMenuButton">
                             <li><a class="dropdown-item"
-                                   href="/index?lang=uk"><span class="fi fi-ua"></span> Українська</a>
+                                   href="?lang=uk"><span class="fi fi-ua"></span> Українська</a>
                             </li>
                             <li><a class="dropdown-item"
-                                   href="/index?lang=en"><span class="fi fi-gb"></span> English</a>
+                                   href="?lang=en"><span class="fi fi-gb"></span> English</a>
                             </li>
                         </ul>
                     </div>
                 </li>
-                <li><a class="nav-link link-dark px-2" href="/ticket" th:text="#{myTickets}">
-                    [${sessionScope.loggedUser.login}]</a>
+                <li><a sec:authorize="isAuthenticated()" class="nav-link link-dark px-2" href="/ticket" th:text="#{myTickets} + '[' + ${#authentication.getName()} + ']'"></a>
                 </li>
             </ul>
             <div class="col-md-auto text-end">
-                <a class="btn btn-outline-primary" href="/auth/signOut" th:text="#{SignOut}"></a>
-                <a class="btn btn-primary" href="/auth/signIn" th:text="#{signIn}"></a>
+                <a sec:authorize="isAuthenticated()" class="btn btn-outline-primary" href="/auth/signOut" th:text="#{SignOut}"></a>
+                <a sec:authorize="!isAuthenticated()" class="btn btn-primary" href="/auth/signIn" th:text="#{signIn}"></a>
             </div>
         </header>
     </div>
