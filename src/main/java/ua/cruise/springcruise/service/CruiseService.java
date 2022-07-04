@@ -32,20 +32,13 @@ public class CruiseService {
         return cruiseRepository.findById(id);
     }
 
-    public Optional<Cruise> findByName(String name){
-        return cruiseRepository.findByName(name);
-    }
-
     @Transactional
     public void update(Cruise cruise){
-        //cruise.setStatus(statusDictRepository.findById(cruiseDTO.getStatus().getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Status not found")));
         cruiseRepository.save(cruise);
     }
 
     @Transactional
     public void create(Cruise cruise){
-        //Cruise cruise = cruiseMapper.DTOtoCruise(cruiseDTO);
-       // cruise.setStatus(statusDictRepository.findById(1L).orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Status not found")));
         cruiseRepository.save(cruise);
     }
 

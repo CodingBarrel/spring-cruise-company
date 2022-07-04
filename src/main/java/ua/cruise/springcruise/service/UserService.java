@@ -2,7 +2,6 @@ package ua.cruise.springcruise.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,13 +17,11 @@ import java.util.Optional;
 public class UserService{
     private final UserRepository userRepository;
     private final UserRoleRepository roleDictRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserRoleRepository roleDictRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, UserRoleRepository roleDictRepository) {
         this.userRepository = userRepository;
         this.roleDictRepository = roleDictRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> findAll() {
@@ -41,19 +38,12 @@ public class UserService{
 
     @Transactional
     public void create(User user) {
-        userRepository.findByLogin(user.getLogin()).ifPresent(u -> {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists");
-        });
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(roleDictRepository.findById(2L).orElseThrow( () -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)));
         userRepository.save(user);
     }
 
     @Transactional
     public void update(User user){
-        if (userRepository.existsById(user.getId()))
             userRepository.save(user);
-        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not existst");
     }
 
     public List<UserRole> findRoleDict(){
