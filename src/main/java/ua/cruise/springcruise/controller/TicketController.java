@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-Add import org.springframework.util.StringUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -53,9 +53,10 @@ public class TicketController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@PathVariable("id") Long id, @ModelAttribute("ticketDTO") TicketDTO ticketDTO) {
-        Ticket ticket = mapper.dtoToTicket(ticketDTO);
-        ticket.setId(id);
+    public String update(@PathVariable("id") Long id, @RequestParam("status") String statusId) {
+        Ticket ticket = ticketService.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+        ticket.setStatus(ticketService.findStatusById(Long.parseLong(statusId)));
         try {
             ticketService.update(ticket);
         } catch (ResponseStatusException ex) {
