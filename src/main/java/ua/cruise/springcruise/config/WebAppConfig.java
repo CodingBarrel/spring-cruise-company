@@ -33,7 +33,7 @@ public class WebAppConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/images/**").addResourceLocations("file:D:\\data");
+        registry.addResourceHandler("/data/**").addResourceLocations("file:D:/data/");
     }
 
     @Bean
