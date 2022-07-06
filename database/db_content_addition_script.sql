@@ -48,13 +48,13 @@ INSERT INTO cruise.route_point (id, route_id, name) VALUES
 (33, 5, 'Порт Абідел-сін (Італія)'),
 (34, 5, 'Порт Безіменний-Принц (Іспанія)');
 
-INSERT INTO cruise.cruise_status_dict VALUES
-(1, 'Створено новий круїз'),
-(2, 'Ведеться набір пасажирів'),
-(3, 'Круїз заповнений, очікується відправлення'),
-(4, 'Круїз в процесі'),
-(5, 'Круїз завершено'),
-(6, 'Круїз відмінено');
+INSERT INTO cruise.cruise_status VALUES
+(1, 'STATUS_NEW'),
+(2, 'STATUS_LOAD'),
+(3, 'STATUS_FULL'),
+(4, 'STATUS_IN_PROCESS'),
+(5, 'STATUS_DONE'),
+(6, 'STATUS_CANCEL');
 
 INSERT INTO cruise.cruise (id, name, liner_id, route_id, start_date_time, end_date_time, price, status_id, description, image_name) VALUES 
 (1, 'Подоріж навколо Азійського моря січень 2022', 1, 1, '2022-06-07 09:00:00', '2022-06-30 21:00:00', 1200.50, 4, 'Найкращий круїз, що покаже вам незабутню подорож по всіх відомих місцях навколо Азійського моря', '1.jpg'),
@@ -76,17 +76,18 @@ INSERT INTO cruise.cruise (id, name, liner_id, route_id, start_date_time, end_da
 (17, 'Подоріж навколо Азійського моря травень 2023', 1, 1, '2022-05-25 09:00:00', '2022-06-05 21:00:00', 1200.50, 2, 'Найкращий круїз, що покаже вам незабутню подорож по всіх відомих місцях навколо Азійського моря', '17.jpg'),
 (18, 'Подоріж навколо Азійського моря липень 2023', 1, 1, '2022-07-25 09:00:00', '2022-08-05 21:00:00', 1200.50, 2, 'Найкращий круїз, що покаже вам незабутню подорож по всіх відомих місцях навколо Азійського моря', '18.jpg');
 
-INSERT INTO cruise.user_role_dict VALUES
-(1, 'Заблокований'),
-(2, 'Користувач'),
-(3, 'Адміністратор');
+INSERT INTO cruise.user_role VALUES
+(1, 'ROLE_BLOCKED'),
+(2, 'ROLE_USER'),
+(3, 'ROLE_ADMIN'),
+(4, 'ROLE_OWNER');
 
-INSERT INTO cruise.ticket_status_dict VALUES
-(1, 'Створена заявка'),
-(2, 'Заявка прийнята, очікується оплата'),
-(3, 'Заявка оплачена'),
-(4, 'Заявка неактуальна'),
-(5, 'Заявка відхилена');
+INSERT INTO cruise.ticket_status VALUES
+(1, 'STATUS_NEW'),
+(2, 'STATUS_APPROVED'),
+(3, 'STATUS_PAYED'),
+(4, 'STATUS_OUTDATED'),
+(5, 'STATUS_DENIED');
 
 
 INSERT INTO cruise.user (id, login, password, role_id, last_login_date_time) VALUES 
