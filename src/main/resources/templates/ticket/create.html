@@ -15,27 +15,27 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-6">
-            <form method="post" action="/ticket" enctype="multipart/form-data">
-                <p><span th:text="#{login}"></span>:<span th:text="${user.login}"></span></p>
-                <p><span th:text="#{name}"></span>:<span th:text="${cruise.name}"></span></p>
-                <p><span th:text="#{price}"></span>:<span th:text="${cruise.price}"></span></p>
+            <form method="post" th:action="@{/ticket/{id} (id=${ticketDTO.cruise.id})}" enctype="multipart/form-data" th:object="${ticketDTO}">
+                <p><span th:text="#{login}"></span>:<span th:text="${ticketDTO.user.login}"></span></p>
+                <p><span th:text="#{name}"></span>:<span th:text="${ticketDTO.cruise.name}"></span></p>
+                <p><span th:text="#{price}"></span>:<span th:text="${ticketDTO.cruise.price}"></span></p>
                 <div class="mb-3">
                     <label class="form-label" for="position" th:text="#{position}"></label> :
                     <select class="form-select-sm" id="position" th:field="*{position}">
-                        <option th:each="position : ${#numbers.sequence(1, cruise.liner.passengerCapacity)}"
-                                value="${positionId}"></option>
+                        <option th:each="pos : ${#numbers.sequence(1, ticketDTO.cruise.liner.passengerCapacity)}"
+                                th:value="${pos}" th:text="${pos}"></option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label class="input-group-text" for="image" th:text="#{image}"></label> :
-                    <input class="form-control-sm" type="file" id="image" th:field="*{docsImageName}">
+                    <input class="form-control-sm" type="file" id="image" name="image">
                 </div>
                 <div class="mb-3">
                     <input class="btn btn-primary" type="submit" th:value="#{orderTicket}">
                 </div>
             </form>
             <a class="btn btn-secondary"
-               th:href="@{/cruise/{id} (id=${ticket.cruise.id})}" th:text="#{backToCruise}">
+               th:href="@{/cruise/{id} (id=${ticketDTO.cruise.id})}" th:text="#{backToCruise}">
             </a>
         </div>
     </div>
