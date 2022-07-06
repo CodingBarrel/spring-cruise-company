@@ -23,6 +23,11 @@ public class RoutePointService {
         return routePointRepository.findByRouteId(id);
     }
 
+    public RoutePoint findById(long id){
+        return routePointRepository.findById(id).orElseThrow( () ->
+                new ResponseStatusException(HttpStatus.BAD_REQUEST, "Routepoint not found"));
+    }
+
     @Transactional
     public void create(RoutePoint routePoint){
         routePointRepository.save(routePoint);
@@ -30,8 +35,6 @@ public class RoutePointService {
 
     @Transactional
     public void update(RoutePoint routePoint){
-           RoutePoint foundRoutePoint = routePointRepository.findById(routePoint.getId()).orElseThrow( () -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
-           routePoint.setRoute(foundRoutePoint.getRoute());
            routePointRepository.save(routePoint);
     }
 

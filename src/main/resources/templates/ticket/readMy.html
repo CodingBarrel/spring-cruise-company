@@ -30,22 +30,20 @@
                 [<a th:href="@{/cruise/{id} (id = ${ticket.cruise.id})}" th:text="#{view}"></a>]
             </td>
             <td th:text="${ticket.position}"></td>
-            <td><a th:href="@{/data/docs/{docsName} (docsName=${ticket.docsImageName})}" th:text="#{view}"></a></td>
+            <td><a th:href="@{/data/docs/{imageName} (imageName=${ticket.imageName})}" th:text="#{view}"></a></td>
             <td th:text="${ticket.price} + UAH"></td>
             <td th:text="${ticket.status.name}"></td>
             <td>
                 <div class="row">
                     <div class="col">
-                        <form action="/ticket">
-                            <input type="hidden" name="action" value="pay">
-                            <input type="hidden" name="id" value="${ticket.id}">
+                        <form th:method="PATCH" th:action="@{/ticket/{id} (id=${ticket.id})}">
+                            <input type="hidden" name="status" value="3">
                             <input class="btn btn-primary" type="submit" th:value="#{pay}">
                         </form>
                     </div>
                     <div class="col">
-                        <form action="/ticket">
-                            <input type="hidden" name="action" value="cancel">
-                            <input type="hidden" name="id" value="${ticket.id}">
+                        <form th:method="PATCH" th:action="@{/ticket/{id} (id=${ticket.id})}">
+                            <input type="hidden" name="status" value="5">
                             <input class="btn btn-secondary" type="submit" th:value="#{cancel}">
                         </form>
                     </div>

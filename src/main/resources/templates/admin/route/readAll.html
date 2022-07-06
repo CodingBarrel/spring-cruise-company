@@ -27,7 +27,7 @@
             <td th:text="${route.name}"></td>
             <td>
                 <ol class="list-group list-group-numbered">
-                    <li th:each="routePoint : ${routePointList}" class="list-group-item"
+                    <li th:each="routePoint : ${route.routePointList}" class="list-group-item"
                         th:text="${routePoint.name}"></li>
                 </ol>
             </td>
@@ -36,7 +36,7 @@
                    th:text="#{routeUpdate}"></a>
             </td>
             <td>
-                <a class="btn btn-outline-warning" th:href="@{/admin-routepoint/{id}/(id=${route.id})}"
+                <a class="btn btn-outline-warning" th:href="@{/admin-route/{routeId}/point/(routeId=${route.id})}"
                    th:text="#{routePointUpdate}"></a>
             </td>
             <td>

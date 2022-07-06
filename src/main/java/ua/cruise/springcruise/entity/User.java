@@ -19,6 +19,7 @@ import java.util.Set;
 @Setter
 @Entity
 public class User implements UserDetails {
+    private static final long serialVersionUID = 5468998319902316963L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)

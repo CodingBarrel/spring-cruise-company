@@ -18,8 +18,6 @@ import java.util.List;
 public class CruiseController {
     private final CruiseService cruiseService;
 
-    private static final String REDIRECT_URL = "redirect:/cruise";
-
     @Autowired
     public CruiseController(CruiseService cruiseService) {
         this.cruiseService = cruiseService;

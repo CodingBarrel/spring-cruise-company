@@ -15,7 +15,7 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-6">
-            <form th:method="POST" th:action="@{/admin-cruise}" th:object="${cruiseDTO}">
+            <form th:method="POST" th:action="@{/admin-cruise}" enctype="multipart/form-data" th:object="${cruiseDTO}">
                 <div class="mb-3">
                     <label class="form-label" for="name" th:text="#{name}"></label> :
                     <input class="form-control" name="name" id="name" th:field="*{name}"/>
@@ -55,7 +55,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="imageName" th:text="#{image}"></label> :
-                    <input class="form-control" name="name" id="imageName" th:field="*{imageName}"/>
+                    <input class="form-control" type="file" id="imageName" name="image"/>
                 </div>
                 <div class="mb-3">
                     <input class="form btn btn-primary align-items-lg-center" type="submit" th:value="#{insert}">

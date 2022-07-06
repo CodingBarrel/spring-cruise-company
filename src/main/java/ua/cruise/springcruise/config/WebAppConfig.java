@@ -27,12 +27,13 @@ public class WebAppConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/auth/signIn").setViewName("user/login");
+        registry.addViewController("/about").setViewName("about");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/images/**").addResourceLocations("file:D:\\data");
+        registry.addResourceHandler("/data/**").addResourceLocations("file:D:/data/");
     }
 
     @Bean

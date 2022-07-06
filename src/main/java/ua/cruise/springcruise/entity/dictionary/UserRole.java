@@ -15,6 +15,7 @@ import javax.persistence.Id;
 @Entity(name="user_role")
 public class UserRole implements GrantedAuthority {
 
+    private static final long serialVersionUID = -8955842694916855221L;
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
