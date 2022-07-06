@@ -15,7 +15,7 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-6">
-            <form th:method="PATCH" th:action="@{/admin-cruise/{id} (id=${cruiseDTO.id})}" th:object="${cruiseDTO}">
+            <form th:method="PATCH" th:action="@{/admin-cruise/{id} (id=${cruiseDTO.id})}" enctype="multipart/form-data" th:object="${cruiseDTO}">
                 <div class="mb-3">
                     <label class="form-label" for="name" th:text="#{name}"></label> :
                     <input class="form-control" name="name" id="name" th:field="*{name}"/>
@@ -54,8 +54,12 @@
                     <textarea class="form-control" id="description" th:field="*{description}"></textarea>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="imageName" th:text="#{image}"></label> :
-                    <input class="form-control" name="name" id="imageName" th:field="*{imageName}"/>
+                    <label class="form-label" for="curr_image_name" th:text="#{currentImage}"></label> :
+                    <a id="curr_image_name" th:href="@{/data/cruise/{imageName} (imageName = ${cruiseDTO.imageName})}" th:text="${cruiseDTO.imageName}"></a>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="imageName" th:text="#{uploadNewImage}"></label> :
+                    <input class="form-control" type="file" id="imageName" name="image"/>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="status" th:text="#{status}"></label> :

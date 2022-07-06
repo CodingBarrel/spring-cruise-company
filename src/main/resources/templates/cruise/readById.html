@@ -59,10 +59,12 @@
                         th:text="${point.name}"></li>
                 </ol>
             </div>
-            <a sec:authorize="isAuthenticated()" class="btn btn-success" th:href="@{/ticket/{id}/new (id=${cruise.id})}" th:text="#{order}"></a>
+            <a sec:authorize="isAuthenticated()" class="btn btn-success" th:href="@{/ticket/{id}/new (id=${cruise.id})}"
+               th:text="#{order}"></a>
         </div>
         <div class="col">
-            <img th:src="@{'data/cruise/'+${cruise.imageName}}" style="width:500px" alt="Cruise image">
+            <img th:src="@{/data/cruise/{imageName} (imageName=${cruise.imageName})}" style="width:500px"
+                 alt="Cruise image">
         </div>
     </div>
 </div>

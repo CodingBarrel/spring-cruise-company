@@ -41,7 +41,6 @@ public class CruiseDTO {
     @NotBlank
     private String description;
 
-    @NotBlank
     private String imageName;
 
 }
