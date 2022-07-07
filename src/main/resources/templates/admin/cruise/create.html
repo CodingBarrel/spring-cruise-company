@@ -18,7 +18,7 @@
             <form th:method="POST" th:action="@{/admin-cruise}" enctype="multipart/form-data" th:object="${cruiseDTO}">
                 <div class="mb-3">
                     <label class="form-label" for="name" th:text="#{name}"></label> :
-                    <input class="form-control" name="name" id="name" th:field="*{name}"/>
+                    <input class="form-control" name="name" id="name" th:field="*{name}"  autofocus/>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="liner" th:text="#{liner}"></label> :

@@ -14,7 +14,7 @@
         </div>
     </div>
     <a class="btn btn-outline-info" href="/admin-panel" th:text="#{backToAdminPanel}"></a>
-    <a class="btn btn-info" href="/admin-cruise/new" th:text="#{cruiseInsert}"></a>
+    <a class="btn btn-info" href="/admin-cruise/new" th:text="#{cruiseInsert}" autofocus></a>
     <table class="table table-bordered">
         <caption th:text="#{listOfCruisesAdmin}"></caption>
         <tr>
@@ -43,7 +43,7 @@
             <td><span th:text="${cruise.price}"></span> UAH</td>
             <td th:text="${cruise.status.name}"></td>
             <td>
-                <a th:href="@{/admin-cruise/{id}/edit(id=${cruise.id})}" th:text="#{edit}"></a>
+                <a class="btn btn-warning" th:href="@{/admin-cruise/{id}/edit(id=${cruise.id})}" th:text="#{edit}"></a>
             </td>
             <td>
                 <form th:method="DELETE" th:action="@{/admin-cruise/{id} (id=${cruise.id})}">

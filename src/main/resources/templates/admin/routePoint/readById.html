@@ -28,9 +28,13 @@
             <td th:text="${routePoint.id}"></td>
             <td th:text="${routePoint.name}"></td>
             <td>
-                <a class="btn btn-warning" th:href="@{/admin-route/{routeId}/point/{pointId}/edit(routeId=${routeId},pointId=${routePoint.id})}"
+                <a class="btn btn-warning"
+                   th:href="@{/admin-route/{routeId}/point/{pointId}/edit(routeId=${routeId},pointId=${routePoint.id})}"
                    th:text="#{edit}"></a>
-                <form th:method="DELETE" th:action="@{/admin-route/{routeId}/point/{pointId} (routeId=${routePoint.route.id}, pointId=${routePoint.id})}">
+            </td>
+            <td>
+                <form th:method="DELETE"
+                      th:action="@{/admin-route/{routeId}/point/{pointId} (routeId=${routePoint.route.id}, pointId=${routePoint.id})}">
                     <input class="btn btn-danger" type="submit" th:value="#{delete}"/>
                 </form>
             </td>

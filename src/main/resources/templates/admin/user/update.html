@@ -22,7 +22,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="roles" th:text="#{role}"></label> :
-                    <select class="form-select" name="roleId" id="roles">
+                    <select class="form-select" name="roleId" id="roles" autofocus>
                         <option th:each="role : ${roleDict}" th:value="${role.id}" th:text="${role.name}"
                                 th:selected="${role.id == userDTO.role.id}"></option>
                     </select>

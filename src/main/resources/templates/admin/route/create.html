@@ -18,7 +18,7 @@
             <form method="POST" th:action="@{/admin-route}" th:object="${routeDTO}">
                 <div class="mb-3">
                     <label class="form-label" for="name" th:text="#{name}"></label> :
-                    <input class="form-control" id="name" th:field="*{name}"/>
+                    <input class="form-control" id="name" th:field="*{name}" autofocus/>
                 </div>
                 <div class="mb3">
                     <input class="btn btn-primary" type="submit" th:value="#{insert}">
