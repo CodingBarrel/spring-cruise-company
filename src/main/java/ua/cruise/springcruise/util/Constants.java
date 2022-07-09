@@ -11,4 +11,8 @@ public final class Constants {
     public static final long TICKET_DEFAULT_STATUS_ID = 1L;
 
     public static final String DATA_PATH = "D:/data/spring/";
+
+    public enum equalitySign {LT,GT, E}
+
+    public enum durationType {DAYS, WEEKS, MONTHS}
 }

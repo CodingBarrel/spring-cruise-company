@@ -18,25 +18,23 @@
             <form method="GET">
                 <div class="input-group mb-3">
                     <label class="input-group-text" for="start_datetime" th:text="#{startDate}"></label>
-                    <select class="form-select-sm" name="datetime_type">
-                        <option value="le"><=</option>
-                        <option value="ge">>=</option>
+                    <select class="form-select-sm" name="dateTimeSign">
+                        <option th:each="sign : ${signList}" th:value="${sign}" th:text="#{${sign}}"
+                                th:selected="${dateTimeSign == sign}"></option>
                     </select>
-                    <input class="form-control-sm" type="date" name="start_datetime" id="start_datetime"
-                           value="${requestScope.startDateTime}"><br>
+                    <input class="form-control-sm" type="datetime-local" name="startDateTime" id="start_datetime"
+                           th:value="${dateTime}"><br>
                 </div>
                 <div class="input-group mb-3">
                     <label class="input-group-text" for="duration" th:text="#{duration}"></label>
-                    <select class="form-select-sm" name="duration_type">
-                        <option value="le"><=</option>
-                        <option value="ge">>=</option>
+                    <select class="form-select-sm" name="durationSign">
+                        <option th:each="sign : ${signList}" th:value="${sign}" th:text="#{${sign}}"
+                                th:selected="${durationSign == sign}"></option>
                     </select>
                     <input class="form-control-sm" type="number" name="duration" id="duration"
-                           value="${requestScope.duration}">
-                    <select class="form-select-sm" name="duration_time_type">
-                        <option value="day" th:text="#{days}"></option>
-                        <option value="week" th:text="#{weeks}"></option>
-                        <option value="month" th:text="#{month}"></option>
+                           th:value="${duration}">
+                    <select class="form-select-sm" name="durationType">
+                        <option th:each="type : ${durationTypeList}" th:value="${type}" th:text="#{${type}}" th:selected="${durationType == type}"></option>
                     </select>
                     <input th:value="#{search}" class="btn ms-5 btn-secondary" type="submit">
                 </div>
@@ -76,10 +74,33 @@
             </div>
         </div>
         <div class="cruise-img col col-3">
-            <img th:src="@{/data/cruise/{imageName} (imageName = ${cruise.imageName})}" class="img-thumbnail img-fluid" alt="Cruise image">
+            <img th:src="@{/data/cruise/{imageName} (imageName = ${cruise.imageName})}" class="img-thumbnail img-fluid"
+                 alt="Cruise image">
         </div>
     </div>
 </div>
+<nav>
+    <ul class="pagination justify-content-center">
+        <li class="page-item" th:if="${page > 1}">
+            <a class="page-link" th:href="@{'/cruise?page='+${page - 1}}">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li th:classappend="${pageNumber == page}? 'active' : '' "
+            th:unless="${cruiseList.totalPages < 1}"
+            th:each="pageNumber : ${#numbers.sequence(1, cruiseList.totalPages)}" class="page-item">
+            <a class="page-link" th:href="@{/cruise (page=${pageNumber}
+                __${dateTime} != null ? ',dateTimeSign=${dateTimeSign},startDateTime=${dateTime}' : '' __
+                __${duration} > 0 ? ',durationSign=${durationSign},duration=${duration},durationType=${durationType}' : '' __)}"
+               th:text="${pageNumber}"></a>
+        </li>
+        <li th:if="${page < cruiseList.totalPages}" class="page-item">
+            <a class="page-link" th:href="@{'/cruise?page='+${page + 1}}">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
 <div th:insert="fragments/footer :: footer"></div>
 
 </body>
