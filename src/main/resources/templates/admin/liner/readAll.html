@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Read</title>
+    <title th:text="#{linerFindAll} + ' | ' + #{cruiseCompany}"></title>
 </head>
 <body>
 <div th:insert="fragments/header :: header"></div>
@@ -14,7 +14,7 @@
         </div>
     </div>
     <a class="btn btn-outline-info" href="/admin-panel" th:text="#{backToAdminPanel}"></a>
-    <a class="btn btn-info" href="/admin-liner/new" th:text="#{linerInsert}"></a>
+    <a class="btn btn-info" href="/admin-liner/new" th:text="#{linerInsert}" autofocus></a>
     <table class="table table-bordered">
         <caption th:text="#{listOfLinersAdmin}"></caption>
         <tr>
@@ -27,7 +27,7 @@
             <td th:text="${liner.name}"></td>
             <td th:text="${liner.passengerCapacity}"></td>
             <td>
-                <a th:href="@{/admin-liner/{id}/edit(id=${liner.id})}" th:text="#{edit}"></a>
+                <a class="btn btn-warning" th:href="@{/admin-liner/{id}/edit(id=${liner.id})}" th:text="#{edit}"></a>
             </td>
             <td>
                 <form th:method="DELETE" th:action="@{/admin-liner/{id} (id=${liner.id})}">

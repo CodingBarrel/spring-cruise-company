@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="#{routePointUpdate} + ' | ' + #{cruiseCompany}"></title>
 </head>
 <body>
 <div th:insert="fragments/header :: header"></div>
@@ -28,9 +28,13 @@
             <td th:text="${routePoint.id}"></td>
             <td th:text="${routePoint.name}"></td>
             <td>
-                <a class="btn btn-warning" th:href="@{/admin-route/{routeId}/point/{pointId}/edit(routeId=${routeId},pointId=${routePoint.id})}"
+                <a class="btn btn-warning"
+                   th:href="@{/admin-route/{routeId}/point/{pointId}/edit(routeId=${routeId},pointId=${routePoint.id})}"
                    th:text="#{edit}"></a>
-                <form th:method="DELETE" th:action="@{/admin-route/{routeId}/point/{pointId} (routeId=${routePoint.route.id}, pointId=${routePoint.id})}">
+            </td>
+            <td>
+                <form th:method="DELETE"
+                      th:action="@{/admin-route/{routeId}/point/{pointId} (routeId=${routePoint.route.id}, pointId=${routePoint.id})}">
                     <input class="btn btn-danger" type="submit" th:value="#{delete}"/>
                 </form>
             </td>

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit</title>
+    <title th:text="#{ticketUpdate} + ' | ' + #{cruiseCompany}"></title>
 </head>
 <body>
 <div th:insert="fragments/header :: header"></div>
@@ -40,7 +40,7 @@
                 </p>
                 <div class="mb-3">
                     <label class="form-label" for="status" th:text="#{updateStatus}"></label>
-                    <select class="form-select" id="status" th:field="*{status.id}">
+                    <select class="form-select" id="status" th:field="*{status.id}" autofocus>
                         <option th:each="status : ${statusList}" th:value="${status.id}"
                                 th:text="${status.name}" th:selected="${status.id == ticketDTO.status.id}"></option>
                     </select>

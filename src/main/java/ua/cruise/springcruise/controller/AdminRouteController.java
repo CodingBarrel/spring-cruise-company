@@ -109,7 +109,7 @@ public class AdminRouteController {
         } catch (ResponseStatusException ex) {
             ex.printStackTrace();
         }
-        return REDIRECT_URL;
+        return REDIRECT_URL + "/" + routeId + "/point";
     }
 
     @PostMapping("/{routeId}/point")
@@ -126,8 +126,9 @@ public class AdminRouteController {
     }
 
     @DeleteMapping("/{routeId}/point/{pointId}")
-    public String pointDelete(@PathVariable Long pointId) {
+    public String pointDelete(@PathVariable("routeId") Long routeId,
+                              @PathVariable("pointId") Long pointId) {
         routePointService.delete(pointId);
-        return REDIRECT_URL;
+        return REDIRECT_URL + "/" + routeId + "/point";
     }
 }

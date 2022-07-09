@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="#{routePointUpdate} + ' | ' + #{cruiseCompany}"></title>
 </head>
 <body>
 <div th:insert="fragments/header :: header"></div>
@@ -25,8 +25,9 @@
             <td th:text="${routePointListEl.id}"></td>
             <td>
                 <div th:if="${routePointListEl.id == routePointDTO.id}">
-                    <form th:method="PATCH" th:action="@{/admin-route/{routeId}/point/{pointId} (routeId = ${routePointDTO.route.id}, pointId=${routePointDTO.id})}" th:object="${routePointDTO}">
-                        <input id="name" th:field="*{name}">
+                    <form th:method="PATCH" th:action="@{/admin-route/{routeId}/point/{pointId}
+                    (routeId = ${routePointDTO.route.id}, pointId=${routePointDTO.id})}" th:object="${routePointDTO}">
+                        <input id="name" th:field="*{name}" autofocus>
                         <input class="btn btn-primary" type="submit" th:value="#{save}">
                     </form>
                 </div>

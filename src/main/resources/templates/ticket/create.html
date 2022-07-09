@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit</title>
+    <title th:text="#{ticketInsert} + ' | ' + #{cruiseCompany}"></title>
 </head>
 <body>
 <div th:insert="fragments/header :: header"></div>
@@ -21,7 +21,7 @@
                 <p><span th:text="#{price}"></span>:<span th:text="${ticketDTO.cruise.price}"></span></p>
                 <div class="mb-3">
                     <label class="form-label" for="position" th:text="#{position}"></label> :
-                    <select class="form-select-sm" id="position" th:field="*{position}">
+                    <select class="form-select-sm" id="position" th:field="*{position}" autofocus>
                         <option th:each="pos : ${#numbers.sequence(1, ticketDTO.cruise.liner.passengerCapacity)}"
                                 th:value="${pos}" th:text="${pos}"></option>
                     </select>

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Read</title>
+    <title th:text="#{routeFindAll} + ' | ' + #{cruiseCompany}"></title>
 </head>
 <body>
 <div th:insert="fragments/header :: header"></div>
@@ -14,7 +14,7 @@
         </div>
     </div>
     <a class="btn btn-outline-info" href="/admin-panel" th:text="#{backToAdminPanel}"></a>
-    <a class="btn btn-info" href="/admin-route/new" th:text="#{routeInsert}"></a>
+    <a class="btn btn-info" href="/admin-route/new" th:text="#{routeInsert}" autofocus></a>
     <table class="table table-bordered">
         <caption th:text="#{listOfRoutes}"></caption>
         <tr>
