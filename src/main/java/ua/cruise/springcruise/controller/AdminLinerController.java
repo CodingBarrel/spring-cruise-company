@@ -1,8 +1,10 @@
 package ua.cruise.springcruise.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ua.cruise.springcruise.dto.LinerDTO;
@@ -10,7 +12,9 @@ import ua.cruise.springcruise.entity.Liner;
 import ua.cruise.springcruise.util.EntityMapper;
 import ua.cruise.springcruise.service.LinerService;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/admin-liner")
@@ -42,12 +46,15 @@ public class AdminLinerController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@PathVariable("id") Long id, @ModelAttribute("linerDTO") LinerDTO linerDTO) {
+    public String update(@PathVariable("id") Long id, @ModelAttribute("linerDTO") @Valid LinerDTO linerDTO,
+                         BindingResult result) {
+        if (result.hasErrors())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "LinerDTO is not valid");
         Liner liner = mapper.dtoToLiner(linerDTO);
-        //TODO: if (linerService.existsByName(liner.getName()) &&
-        //       !Objects.equals(linerService.findByName(liner.getName()).getId(), liner.getId()))
-        //    throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Failed to update liner: name already taken [name= " + liner.getName() + "]");
         liner.setId(id);
+        if (linerService.existsByName(liner.getName()) &&
+                !Objects.equals(linerService.findByName(liner.getName()).getId(), liner.getId()))
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Failed to update liner: name already taken [name= " + liner.getName() + "]");
         try {
             linerService.update(liner);
         } catch (ResponseStatusException ex) {
@@ -64,10 +71,12 @@ public class AdminLinerController {
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("linerDTO") LinerDTO linerDTO) {
+    public String create(@ModelAttribute("linerDTO") @Valid LinerDTO linerDTO, BindingResult result) {
+        if (result.hasErrors())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "LinerDTO is not valid");
         Liner liner = mapper.dtoToLiner(linerDTO);
-        //TODO: if (linerService.existsByName(liner.getName()))
-        //    throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Failed to create liner: name already taken [name=" + liner.getName() + "]");
+        if (linerService.existsByName(liner.getName()))
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Failed to create liner: name already taken [name=" + liner.getName() + "]");
         try {
             linerService.create(liner);
         } catch (ResponseStatusException ex) {

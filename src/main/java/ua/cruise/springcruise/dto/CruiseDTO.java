@@ -4,10 +4,16 @@ import lombok.*;
 import ua.cruise.springcruise.entity.Liner;
 import ua.cruise.springcruise.entity.Route;
 import ua.cruise.springcruise.entity.dictionary.CruiseStatus;
+import ua.cruise.springcruise.validation.DateTimeMatch;
+import ua.cruise.springcruise.validation.NameMatch;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
+
+@DateTimeMatch.List({
+        @DateTimeMatch(
+                firstDateTime = "startDateTime",
+                secondDateTime = "endDateTime")})
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,7 +24,7 @@ public class CruiseDTO {
 
     private Long id;
 
-    @NotBlank
+    @NameMatch
     private String name;
 
     @NotNull
@@ -34,6 +40,7 @@ public class CruiseDTO {
     private String endDateTime;
 
     @NotNull
+    @PositiveOrZero
     private BigDecimal price;
 
     private CruiseStatus status;

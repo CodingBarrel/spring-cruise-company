@@ -89,7 +89,7 @@ public class CruiseService {
     }
 
     public void create(Cruise cruise) {
-        if (cruiseRepository.existsById(cruise.getId()))
+        if (cruise.getId() != null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to create cruise: already exists [id=" + cruise.getId() + "]");
         cruiseRepository.save(cruise);
     }

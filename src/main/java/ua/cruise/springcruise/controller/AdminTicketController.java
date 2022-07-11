@@ -3,6 +3,7 @@ package ua.cruise.springcruise.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ua.cruise.springcruise.dto.TicketDTO;
@@ -45,7 +46,7 @@ public class AdminTicketController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@PathVariable("id") Long id, @ModelAttribute("ticketDTO") TicketDTO ticketDTO) {
+    public String update(@PathVariable("id") Long id, @ModelAttribute("ticketDTO") TicketDTO ticketDTO, BindingResult result) {
         Ticket ticket = ticketService.findById(id);
         TicketStatus status = ticketService.findStatusById(ticketDTO.getStatus().getId());
         ticket.setStatus(status);

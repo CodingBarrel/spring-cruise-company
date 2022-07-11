@@ -27,7 +27,7 @@
                 <div th:if="${routePointListEl.id == routePointDTO.id}">
                     <form th:method="PATCH" th:action="@{/admin-route/{routeId}/point/{pointId}
                     (routeId = ${routePointDTO.route.id}, pointId=${routePointDTO.id})}" th:object="${routePointDTO}">
-                        <input id="name" th:field="*{name}" autofocus>
+                        <input id="name" th:field="*{name}" autofocus required pattern="^(\S).{1,120}(\S)$">
                         <input class="btn btn-primary" type="submit" th:value="#{save}">
                     </form>
                 </div>
