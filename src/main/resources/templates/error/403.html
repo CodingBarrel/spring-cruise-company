@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title th:text="${ERROR_403} + ' | ' + #{cruiseCompany}"></title>
+    <title th:text="#{ERROR_403} + ' | ' + #{cruiseCompany}"></title>
 </head>
 
 
@@ -13,9 +13,9 @@
 <div class="d-flex align-items-center justify-content-center vh-100">
     <div class="text-center">
         <h1 class="display-1 fw-bold">403</h1>
-        <p class="fs-3"> <span class="text-danger">Whoops!</span> Forbidden.</p>
-        <p class="lead">You are not authorized to do that</p>
-        <a href="/index" class="btn btn-primary">Go Home</a>
+        <p class="fs-3"><span class="text-danger" th:text="#{whoops}"></span><span th:text="#{ERROR_403}"></span></p>
+        <p class="lead" th:text="#{ERROR_403_INFO}"></p>
+        <a href="/" class="btn btn-primary" th:text="#{backToIndex}"></a>
     </div>
 </div>
 </body>

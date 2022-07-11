@@ -65,7 +65,7 @@
                     <label class="form-label" for="status" th:text="#{status}"></label> :
                     <select class="form-select" id="status" th:field="*{status.id}">
                         <option th:each="status : ${statusList}" th:value="${status.id}"
-                                th:text="${status.name}" th:selected="${status.id == cruiseDTO.status.id}"></option>
+                                th:text="#{${status.name}}" th:selected="${status.id == cruiseDTO.status.id}"></option>
                     </select>
                 </div>
                 <div class="mb-3">

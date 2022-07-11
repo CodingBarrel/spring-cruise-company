@@ -32,7 +32,7 @@
             <td th:text="${ticket.position}"></td>
             <td><a th:href="@{/data/docs/{imageName} (imageName=${ticket.imageName})}" th:text="#{view}"></a></td>
             <td th:text="${ticket.price} + UAH"></td>
-            <td th:text="${ticket.status.name}"></td>
+            <td th:text="#{${ticket.status.name}}"></td>
             <td>
                 <div class="row">
                     <div class="col">

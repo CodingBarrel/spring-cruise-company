@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title th:text="${ERROR_400} + ' | ' + #{cruiseCompany}"></title>
+    <title th:text="#{ERROR_400} + ' | ' + #{cruiseCompany}"></title>
 </head>
 
 
@@ -13,9 +13,9 @@
 <div class="d-flex align-items-center justify-content-center vh-100">
     <div class="text-center">
         <h1 class="display-1 fw-bold">400</h1>
-        <p class="fs-3"> <span class="text-danger">Whoops!</span> Bad request.</p>
-        <p class="lead">The server cannot process the request due to client error. Check your input data</p>
-        <a href="/index" class="btn btn-primary">Go Home</a>
+        <p class="fs-3"><span class="text-danger" th:text="#{whoops}"></span> <span th:text="#{ERROR_400}"></span></p>
+        <p class="lead" th:text="#{ERROR_400_INFO}"></p>
+        <a href="/" class="btn btn-primary" th:text="#{backToIndex}"></a>
     </div>
 </div>
 </body>

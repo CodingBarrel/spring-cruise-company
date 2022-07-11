@@ -13,9 +13,9 @@
 <div class="d-flex align-items-center justify-content-center vh-100">
     <div class="text-center">
         <h1 class="display-1 fw-bold">409</h1>
-        <p class="fs-3"> <span class="text-danger">Whoops!</span> Conflict.</p>
-        <p class="lead">The page you’re trying to edit is now being edited by another session.</p>
-        <a href="/index" class="btn btn-primary">Go Home</a>
+        <p class="fs-3"> <span class="text-danger" th:text="#{whoops}">Whoops!</span><span th:text="#{ERROR_409}"></span></p>
+        <p class="lead" th:text="#{ERROR_409_INFO}"></p>
+        <a href="/" class="btn btn-primary" th:text="#{backToIndex}"></a>
     </div>
 </div>
 </body>
