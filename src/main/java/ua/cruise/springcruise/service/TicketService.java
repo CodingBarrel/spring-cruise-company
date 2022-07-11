@@ -76,7 +76,7 @@ public class TicketService {
     }
 
     public List<TicketStatus> findStatusDict() {
-        return statusDictRepository.findAll();
+        return statusDictRepository.findByOrderByIdAsc();
     }
 
     public TicketStatus findStatusById(long id) {

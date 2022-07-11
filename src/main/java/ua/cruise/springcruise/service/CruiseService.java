@@ -97,7 +97,7 @@ public class CruiseService {
     }
 
     public List<CruiseStatus> findAllStatuses() {
-        return statusDictRepository.findAll();
+        return statusDictRepository.findByOrderByIdAsc();
     }
 
     public CruiseStatus findStatusById(long id) {

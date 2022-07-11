@@ -50,7 +50,7 @@ public class UserService {
     }
 
     public List<UserRole> findRoleDict() {
-        return roleDictRepository.findAll();
+        return roleDictRepository.findByOrderByIdAsc();
     }
 
     public UserRole findRoleById(long id) {

@@ -93,20 +93,15 @@ public class TicketController {
         ticket.setUser(user);
         ticket.setPrice(cruise.getPrice());
         ticket.setStatus(ticketService.findStatusById(Constants.TICKET_DEFAULT_STATUS_ID));
-        Path fileDirectory = null;
-        String fileName = null;
+        Path fileDirectory;
+        String fileName;
         try {
             fileDirectory = Path.of(Constants.DATA_PATH + "/docs/");
             fileName = storageService.save(fileDirectory, fileExt, file);
             ticket.setImageName(fileName);
             ticketService.create(ticket);
         } catch (ResponseStatusException | IOException ex) {
-            log.info("Failed to save image for ticket. Trying to delete", ex);
-            try {
-                storageService.delete(Path.of(fileDirectory + fileName));
-            } catch (IOException internalEx) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to delete file [dir=" + fileDirectory + "], file=[" + fileName + "]", internalEx);
-            }
+            log.info("Failed to save image for ticket", ex);
         }
         return REDIRECT_URL;
     }

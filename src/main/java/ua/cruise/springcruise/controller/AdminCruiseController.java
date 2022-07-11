@@ -83,7 +83,7 @@ public class AdminCruiseController {
                 !Objects.equals(cruiseService.findByName(cruise.getName()).getId(), cruise.getId()))
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Failed to update cruise: name is already taken");
         Path fileDirectory;
-        String fileName = null;
+        String fileName;
         if (file != null && !file.isEmpty()) {
             String fileExt = StringUtils.getFilenameExtension(file.getOriginalFilename());
             fileDirectory = Path.of(Constants.DATA_PATH + "/cruise/");
@@ -95,6 +95,7 @@ public class AdminCruiseController {
                 storageService.delete(Path.of(fileDirectory + oldFileName));
             } catch (IOException ex) {
                 log.info("Failed to save image for cruise", ex);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to create cruise: cant save image");
             }
         } else {
             cruise.setImageName(cruiseService.findById(cruise.getId()).getImageName());
@@ -133,6 +134,7 @@ public class AdminCruiseController {
             cruise.setImageName(fileName);
         } catch (IOException ex) {
             log.info("Failed to save image for cruise", ex);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to create cruise: cant save image");
         }
         cruiseService.create(cruise);
         return REDIRECT_URL;
