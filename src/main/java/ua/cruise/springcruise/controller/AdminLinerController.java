@@ -1,5 +1,6 @@
 package ua.cruise.springcruise.controller;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 
+@Log4j2
 @Controller
 @RequestMapping("/admin-liner")
 public class AdminLinerController {

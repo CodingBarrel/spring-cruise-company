@@ -1,5 +1,6 @@
 package ua.cruise.springcruise.service;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import ua.cruise.springcruise.repository.dict.UserRoleRepository;
 
 import java.util.List;
 
+@Log4j2
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -29,11 +31,6 @@ public class UserService {
     public User findById(long id) {
         return userRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed to find user by id: not exists [id=" + id + "]"));
-    }
-
-    public User findByLogin(String login) {
-        return userRepository.findByLogin(login).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed to find user by login: not exists [login=" + login + "]"));
     }
 
     public boolean existsByLogin(String login){

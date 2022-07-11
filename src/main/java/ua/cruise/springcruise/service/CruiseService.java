@@ -1,5 +1,6 @@
 package ua.cruise.springcruise.service;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Log4j2
 @Service
 public class CruiseService {
     private final CruiseRepository cruiseRepository;

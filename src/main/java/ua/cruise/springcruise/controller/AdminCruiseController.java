@@ -82,7 +82,7 @@ public class AdminCruiseController {
         if (cruiseService.existsByName(cruise.getName()) &&
                 !Objects.equals(cruiseService.findByName(cruise.getName()).getId(), cruise.getId()))
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Failed to update cruise: name is already taken");
-        Path fileDirectory = null;
+        Path fileDirectory;
         String fileName = null;
         if (file != null && !file.isEmpty()) {
             String fileExt = StringUtils.getFilenameExtension(file.getOriginalFilename());
@@ -94,12 +94,7 @@ public class AdminCruiseController {
                 cruiseService.update(cruise);
                 storageService.delete(Path.of(fileDirectory + oldFileName));
             } catch (IOException ex) {
-                log.info("Failed to save image for cruise. Trying to delete", ex);
-                try {
-                    storageService.delete(Path.of(fileDirectory + fileName));
-                } catch (IOException internalEx) {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to delete file [dir=" + fileDirectory + "], file=[" + fileName + "]", internalEx);
-                }
+                log.info("Failed to save image for cruise", ex);
             }
         } else {
             cruise.setImageName(cruiseService.findById(cruise.getId()).getImageName());
@@ -130,19 +125,14 @@ public class AdminCruiseController {
         if (cruiseService.existsByName(cruise.getName()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to create cruise: name is already taken");
         String fileExt = StringUtils.getFilenameExtension(file.getOriginalFilename());
-        Path fileDirectory = null;
-        String fileName = null;
+        Path fileDirectory;
+        String fileName;
         try {
             fileDirectory = Path.of(Constants.DATA_PATH + "/cruise/");
             fileName = storageService.save(fileDirectory, fileExt, file);
             cruise.setImageName(fileName);
         } catch (IOException ex) {
-            log.info("Failed to save image for cruise. Trying to delete", ex);
-            try {
-                storageService.delete(Path.of(fileDirectory + fileName));
-            } catch (IOException internalEx) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to delete file [dir=" + fileDirectory + "], file=[" + fileName + "]", internalEx);
-            }
+            log.info("Failed to save image for cruise", ex);
         }
         cruiseService.create(cruise);
         return REDIRECT_URL;

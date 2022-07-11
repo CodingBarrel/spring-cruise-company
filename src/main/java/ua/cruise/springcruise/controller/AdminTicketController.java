@@ -1,5 +1,6 @@
 package ua.cruise.springcruise.controller;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import ua.cruise.springcruise.service.TicketService;
 
 import java.util.List;
 
+@Log4j2
 @Controller
 @RequestMapping("/admin-ticket")
 public class AdminTicketController {

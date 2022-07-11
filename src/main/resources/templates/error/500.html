@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title th:text="Internal server error + ' | ' + #{cruiseCompany}"></title>
+    <title th:text="#{ERROR_500} + ' | ' + #{cruiseCompany}"></title>
 </head>
 
 
@@ -12,7 +12,7 @@
 <div th:insert="fragments/header :: header"></div>
 <div class="d-flex align-items-center justify-content-center vh-100">
     <div class="text-center">
-        <h1 class="display-1 fw-bold">404</h1>
+        <h1 class="display-1 fw-bold">500</h1>
         <p class="fs-3"> <span class="text-danger">Whoops!</span> Internal server error.</p>
         <p class="lead">Something gone wrong on server. Please try again later.</p>
         <a href="/index" class="btn btn-primary">Go Home</a>
