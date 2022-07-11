@@ -1,7 +1,6 @@
 package ua.cruise.springcruise.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +36,7 @@ public class AdminTicketController {
 
     @GetMapping("/{id}/edit")
     public String updateForm(@PathVariable Long id, Model model) {
-        Ticket ticket = ticketService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ticket not found"));
+        Ticket ticket = ticketService.findById(id);
         TicketDTO ticketDTO = mapper.ticketToDTO(ticket);
         List<TicketStatus> statusList = ticketService.findStatusDict();
         model.addAttribute("ticketDTO", ticketDTO);
@@ -47,9 +46,9 @@ public class AdminTicketController {
 
     @PatchMapping("/{id}")
     public String update(@PathVariable("id") Long id, @ModelAttribute("ticketDTO") TicketDTO ticketDTO) {
-        Ticket ticket = ticketService.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
-        ticket.setStatus(ticketDTO.getStatus());
+        Ticket ticket = ticketService.findById(id);
+        TicketStatus status = ticketService.findStatusById(ticketDTO.getStatus().getId());
+        ticket.setStatus(status);
         try {
             ticketService.update(ticket);
         } catch (ResponseStatusException ex) {

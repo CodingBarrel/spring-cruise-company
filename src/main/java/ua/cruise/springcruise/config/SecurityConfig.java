@@ -14,7 +14,7 @@ public class SecurityConfig {
         http.csrf().disable().authorizeRequests()
                 .antMatchers("/admin-panel**", "/admin-cruise**", "/admin-liner/**", "/admin-route/**", "/admin-routepoint/**", "admin-ticket/**", "/admin-user/**", "/data/docs/*").hasAnyRole("OWNER", "ADMIN")
                 .antMatchers("/ticket/**").hasAnyRole("OWNER", "ADMIN", "USER")
-                .antMatchers("/", "/about", "/auth/**", "/cruise/**", "/data/cruise/*").permitAll()
+                .antMatchers("/", "/about", "/auth/**", "/cruise/**", "/data/cruise/*", "/error/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

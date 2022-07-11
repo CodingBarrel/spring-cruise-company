@@ -1,14 +1,13 @@
 package ua.cruise.springcruise.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import ua.cruise.springcruise.entity.Liner;
 import ua.cruise.springcruise.repository.LinerRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LinerService {
@@ -23,21 +22,35 @@ public class LinerService {
         return linerRepository.findAll();
     }
 
-    public Optional<Liner> findById(long id){
-        return linerRepository.findById(id);
+    public Liner findById(long id){
+        return linerRepository.findById(id).orElseThrow( () ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed to find liner by id: not exists [id=" + id + "]"));
     }
 
-    @Transactional
+    public Liner findByName(String name){
+        return linerRepository.findByName(name).orElseThrow( () ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed to find liner by name: not exists [name=" + name + "]"));
+    }
+
+    public boolean existsByName(String name) {
+        return linerRepository.existsByName(name);
+    }
+
     public void update(Liner liner) throws ResponseStatusException{
+        if (!linerRepository.existsById(liner.getId()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to update liner: liner not exists [id=" + liner.getId() + "]");
         linerRepository.save(liner);
     }
 
-    @Transactional
     public void create(Liner liner) throws ResponseStatusException{
+        if (linerRepository.existsById(liner.getId()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to create liner: liner already exists [id=" + liner.getId() + "]");
         linerRepository.save(liner);
     }
 
     public void delete(long id) throws ResponseStatusException{
+        if (!linerRepository.existsById(id))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to delete liner: liner not exists [id=" + id + "]");
         linerRepository.deleteById(id);
     }
 }

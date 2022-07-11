@@ -3,7 +3,6 @@ package ua.cruise.springcruise.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import ua.cruise.springcruise.entity.RoutePoint;
 import ua.cruise.springcruise.repository.RoutePointRepository;
@@ -25,20 +24,33 @@ public class RoutePointService {
 
     public RoutePoint findById(long id){
         return routePointRepository.findById(id).orElseThrow( () ->
-                new ResponseStatusException(HttpStatus.BAD_REQUEST, "Routepoint not found"));
+                new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to find route routepoint by id: not exists [id=" + id + "]"));
     }
 
-    @Transactional
+    public RoutePoint findByName(String name){
+        return routePointRepository.findByName(name).orElseThrow( () ->
+                new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to find routepoint: not exists [name=" + name + "]"));
+    }
+
+    public boolean existsByName(String name) {
+        return routePointRepository.existsByName(name);
+    }
+
     public void create(RoutePoint routePoint){
+        if (routePointRepository.existsById(routePoint.getId()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to create routepoint: already exists [id=" + routePoint.getId() + "]");
         routePointRepository.save(routePoint);
     }
 
-    @Transactional
     public void update(RoutePoint routePoint){
-           routePointRepository.save(routePoint);
+           if (!routePointRepository.existsById(routePoint.getId()))
+               throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to update routepoint: not exists");
+        routePointRepository.save(routePoint);
     }
 
     public void delete(long id){
+        if (!routePointRepository.existsById(id))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to delete routepoint: not exists");
         routePointRepository.deleteById(id);
     }
 }

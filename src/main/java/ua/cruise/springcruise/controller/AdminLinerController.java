@@ -1,7 +1,6 @@
 package ua.cruise.springcruise.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +35,7 @@ public class AdminLinerController {
 
     @GetMapping("/{id}/edit")
     public String updateForm(@PathVariable Long id, Model model) {
-        Liner liner = linerService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Liner not found"));
+        Liner liner = linerService.findById(id);
         LinerDTO linerDTO = mapper.linerToDTO(liner);
         model.addAttribute("linerDTO", linerDTO);
         return "admin/liner/update";
@@ -45,6 +44,9 @@ public class AdminLinerController {
     @PatchMapping("/{id}")
     public String update(@PathVariable("id") Long id, @ModelAttribute("linerDTO") LinerDTO linerDTO) {
         Liner liner = mapper.dtoToLiner(linerDTO);
+        //TODO: if (linerService.existsByName(liner.getName()) &&
+        //       !Objects.equals(linerService.findByName(liner.getName()).getId(), liner.getId()))
+        //    throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Failed to update liner: name already taken [name= " + liner.getName() + "]");
         liner.setId(id);
         try {
             linerService.update(liner);
@@ -64,6 +66,8 @@ public class AdminLinerController {
     @PostMapping()
     public String create(@ModelAttribute("linerDTO") LinerDTO linerDTO) {
         Liner liner = mapper.dtoToLiner(linerDTO);
+        //TODO: if (linerService.existsByName(liner.getName()))
+        //    throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Failed to create liner: name already taken [name=" + liner.getName() + "]");
         try {
             linerService.create(liner);
         } catch (ResponseStatusException ex) {

@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface CruiseRepository extends JpaRepository<Cruise, Long>, JpaSpecificationExecutor<Cruise> {
     Optional<Cruise> findByName(String name);
+    boolean existsByName(String name);
 }

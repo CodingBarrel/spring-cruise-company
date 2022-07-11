@@ -35,6 +35,8 @@ public class AuthController {
     @PostMapping("/signUp")
     public String signUp(@ModelAttribute("userDTO") UserDTO userDTO) {
         User user = mapper.dtoToUser(userDTO);
+        //TODO: if (userService.existsByLogin(user.getLogin()))
+        //    throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Failed to create user: login already taken [login=" + user.getLogin() + "]");
         user.setRole(userService.findRoleById(Constants.USER_DEFAULT_ROLE_ID));
         try {
             userService.create(user);

@@ -29,11 +29,7 @@ public class StorageService {
         return fileName;
     }
 
-    public void delete(Path path) {
-        try {
+    public void delete(Path path) throws IOException {
             Files.deleteIfExists(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

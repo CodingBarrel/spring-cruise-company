@@ -1,5 +1,6 @@
 package ua.cruise.springcruise.controller;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
+@Log4j2
 @Controller
 @RequestMapping("/ticket")
 public class TicketController {
@@ -54,8 +56,7 @@ public class TicketController {
 
     @PatchMapping("/{id}")
     public String update(@PathVariable("id") Long id, @RequestParam("status") String statusId) {
-        Ticket ticket = ticketService.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+        Ticket ticket = ticketService.findById(id);
         ticket.setStatus(ticketService.findStatusById(Long.parseLong(statusId)));
         try {
             ticketService.update(ticket);
@@ -68,7 +69,7 @@ public class TicketController {
     @GetMapping("{id}/new")
     public String createForm(@PathVariable("id") Long id, Model model) {
         TicketDTO ticketDTO = new TicketDTO();
-        Cruise cruise = cruiseService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+        Cruise cruise = cruiseService.findById(id);
         ticketDTO.setCruise(cruise);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) auth.getPrincipal();
@@ -85,8 +86,7 @@ public class TicketController {
                          @RequestParam("image") MultipartFile file) {
         String fileExt = StringUtils.getFilenameExtension(file.getOriginalFilename());
         Ticket ticket = mapper.dtoToTicket(ticketDTO);
-        Cruise cruise = cruiseService.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+        Cruise cruise = cruiseService.findById(id);
         ticket.setCruise(cruise);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) auth.getPrincipal();
@@ -101,29 +101,25 @@ public class TicketController {
             ticket.setImageName(fileName);
             ticketService.create(ticket);
         } catch (ResponseStatusException | IOException ex) {
-            storageService.delete(Path.of(fileDirectory + fileName));
-            ex.printStackTrace();
+            log.info("Failed to save image for ticket. Trying to delete", ex);
+            try {
+                storageService.delete(Path.of(fileDirectory + fileName));
+            } catch (IOException internalEx) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to delete file [dir=" + fileDirectory + "], file=[" + fileName + "]", internalEx);
+            }
         }
         return REDIRECT_URL;
     }
 
     @GetMapping("{id}/pay")
     public String pay(@PathVariable Long id) {
-        try {
-            ticketService.pay(id);
-        } catch (ResponseStatusException ex) {
-            ex.printStackTrace();
-        }
+        ticketService.pay(id);
         return REDIRECT_URL;
     }
 
     @GetMapping("{id}/cancel")
     public String cancel(@PathVariable Long id) {
-        try {
-            ticketService.cancel(id);
-        } catch (ResponseStatusException ex) {
-            ex.printStackTrace();
-        }
+        ticketService.cancel(id);
         return REDIRECT_URL;
     }
 }

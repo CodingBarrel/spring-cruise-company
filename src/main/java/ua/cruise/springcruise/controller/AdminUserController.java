@@ -1,7 +1,6 @@
 package ua.cruise.springcruise.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +36,7 @@ public class AdminUserController {
 
     @GetMapping("/{id}/edit")
     public String updateForm(@PathVariable Long id, Model model) {
-        User user = userService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
+        User user = userService.findById(id);
         UserDTO userDTO = mapper.userToDTO(user);
         List<UserRole> roleDict = userService.findRoleDict();
         model.addAttribute("userDTO", userDTO);
@@ -47,8 +46,9 @@ public class AdminUserController {
 
     @PatchMapping("/{id}")
     public String update(@PathVariable("id") Long id, @ModelAttribute("userDTO") UserDTO userDTO) {
-        User user = mapper.dtoToUser(userDTO);
-        user.setId(id);
+        User user = userService.findById(id);
+        UserRole role = userService.findRoleById(userDTO.getRole().getId());
+        user.setRole(role);
         try {
             userService.update(user);
         } catch (ResponseStatusException ex) {

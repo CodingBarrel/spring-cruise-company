@@ -14,7 +14,6 @@ import ua.cruise.springcruise.util.EntityMapper;
 import ua.cruise.springcruise.service.RouteService;
 
 import java.util.List;
-
 @Controller
 @RequestMapping("/admin-route")
 public class AdminRouteController {
@@ -50,6 +49,9 @@ public class AdminRouteController {
     @PatchMapping("/{id}")
     public String update(@PathVariable("id") Long id, @ModelAttribute("routeDTO") RouteDTO routeDTO) {
         Route route = mapper.dtoToRoute(routeDTO);
+        //TODO: if (routeService.existsByName(route.getName()) &&
+        //        !Objects.equals(routeService.findByName(route.getName()).getId(), route.getId()))
+        //    throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Failed to update route [id=" + id + "]");
         routeService.update(route);
         return REDIRECT_URL;
     }
@@ -64,6 +66,8 @@ public class AdminRouteController {
     @PostMapping()
     public String create(@ModelAttribute("routeDTO") RouteDTO routeDTO) {
         Route route = mapper.dtoToRoute(routeDTO);
+       //TODO: if (routeService.existsByName(route.getName()))
+       //     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to create route: name already taken [id=" + route.getId() + "]");
         try {
             routeService.create(route);
         } catch (ResponseStatusException ex) {
@@ -102,6 +106,8 @@ public class AdminRouteController {
                               @PathVariable("pointId") Long pointId,
                               @ModelAttribute("routePointDTO") RoutePointDTO routePointDTO) {
         RoutePoint routePoint = mapper.dtoToRoutePoint(routePointDTO);
+       //TODO: if (routePointService.existsByName(routePoint.getName()) && !Objects.equals(routePointService.findByName(routePoint.getName()).getId(), routePoint.getId()))
+        //    throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Failed to update routepoint: name already taken[name=" + routePoint.getName() + "]");
         routePoint.setId(pointId);
         routePoint.setRoute(routeService.findById(routeId));
         try {

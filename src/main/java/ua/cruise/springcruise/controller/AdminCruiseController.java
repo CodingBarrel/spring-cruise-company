@@ -1,5 +1,6 @@
 package ua.cruise.springcruise.controller;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,9 @@ import ua.cruise.springcruise.util.Constants;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 
+@Log4j2
 @Controller
 @RequestMapping("/admin-cruise")
 public class AdminCruiseController {
@@ -54,7 +57,7 @@ public class AdminCruiseController {
 
     @GetMapping("/{id}/edit")
     public String updateForm(@PathVariable Long id, Model model) {
-        Cruise cruise = cruiseService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cruise not found"));
+        Cruise cruise = cruiseService.findById(id);
         CruiseDTO cruiseDTO = entityMapper.cruiseToDTO(cruise);
         List<Liner> linerList = linerService.findAll();
         List<Route> routeList = routeService.findAll();
@@ -71,6 +74,9 @@ public class AdminCruiseController {
     public String update(@PathVariable("id") long id, @ModelAttribute("cruiseDTO") CruiseDTO cruiseDTO,
                          @RequestParam(value = "image", required = false) MultipartFile file) {
         Cruise cruise = entityMapper.dtoToCruise(cruiseDTO);
+        //TODO: if (cruiseService.existsByName(cruise.getName()) &&
+        //       !Objects.equals(cruiseService.findByName(cruise.getName()).getId(), cruise.getId()))
+        //    throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Failed to update cruise: name is already taken");
         cruise.setId(id);
         Path fileDirectory = null;
         String fileName = null;
@@ -81,11 +87,15 @@ public class AdminCruiseController {
                 fileName = storageService.save(fileDirectory, fileExt, file);
                 cruise.setImageName(fileName);
             } catch (IOException ex) {
-                storageService.delete(Path.of(fileDirectory + fileName));
+                log.info("Failed to save image for cruise. Trying to delete", ex);
+                try {
+                    storageService.delete(Path.of(fileDirectory + fileName));
+                } catch (IOException internalEx) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to delete file [dir=" + fileDirectory + "], file=[" + fileName + "]", internalEx);
+                }
             }
         } else
-            cruise.setImageName(cruiseService.findById(id).orElseThrow(
-                    () -> new ResponseStatusException(HttpStatus.BAD_REQUEST)).getImageName());
+            cruise.setImageName(cruiseService.findById(id).getImageName());
         cruiseService.update(cruise);
         return REDIRECT_URL;
     }
@@ -115,6 +125,8 @@ public class AdminCruiseController {
     public String create(@ModelAttribute("cruiseDTO") CruiseDTO cruiseDTO,
                          @RequestParam("image") MultipartFile file) {
         Cruise cruise = entityMapper.dtoToCruise(cruiseDTO);
+       //TODO: if (cruiseService.existsByName(cruise.getName()))
+       //    throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Failed to create cruise: name is already taken");
         cruise.setStatus(cruiseService.findStatusById(Constants.CRUISE_DEFAULT_STATUS_ID));
         String fileExt = StringUtils.getFilenameExtension(file.getOriginalFilename());
         Path fileDirectory = null;
@@ -123,9 +135,13 @@ public class AdminCruiseController {
             fileDirectory = Path.of(Constants.DATA_PATH + "/cruise/");
             fileName = storageService.save(fileDirectory, fileExt, file);
             cruise.setImageName(fileName);
-        } catch (IOException e) {
-            storageService.delete(Path.of(fileDirectory + fileName));
-            e.printStackTrace();
+        } catch (IOException ex) {
+            log.info("Failed to save image for cruise. Trying to delete", ex);
+            try {
+                storageService.delete(Path.of(fileDirectory + fileName));
+            } catch (IOException internalEx) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to delete file [dir=" + fileDirectory + "], file=[" + fileName + "]", internalEx);
+            }
         }
         cruiseService.create(cruise);
         return REDIRECT_URL;
