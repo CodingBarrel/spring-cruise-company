@@ -41,7 +41,7 @@
             <td th:text="${cruise.startDateTime}"></td>
             <td th:text="${cruise.endDateTime}"></td>
             <td><span th:text="${cruise.price}"></span> UAH</td>
-            <td th:text="${cruise.status.name}"></td>
+            <td th:text="#{${cruise.status.name}}"></td>
             <td>
                 <a class="btn btn-warning" th:href="@{/admin-cruise/{id}/edit(id=${cruise.id})}" th:text="#{edit}"></a>
             </td>

@@ -8,6 +8,7 @@ import ua.cruise.springcruise.entity.dictionary.TicketStatus;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
 @NoArgsConstructor
@@ -30,7 +31,7 @@ public class TicketDTO {
 
     private String imageName;
 
-    @NotNull
+    @PositiveOrZero
     private BigDecimal price;
 
     private TicketStatus status;

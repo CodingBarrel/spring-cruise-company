@@ -8,13 +8,8 @@ import java.util.List;
 
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
     List<Ticket> findByUser_Id(Long id);
-
     List<Ticket> findByCruiseAndStatus_IdLessThanEqual(Cruise cruise, Long id);
 
-
-
-
-
-
+    boolean existsByCruiseAndPositionAndStatusIdLessThanAllIgnoreCase(Cruise cruise, int position, long statusId);
 
 }

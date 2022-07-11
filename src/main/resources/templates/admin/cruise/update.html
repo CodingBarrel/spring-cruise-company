@@ -18,7 +18,7 @@
             <form th:method="PATCH" th:action="@{/admin-cruise/{id} (id=${cruiseDTO.id})}" enctype="multipart/form-data" th:object="${cruiseDTO}">
                 <div class="mb-3">
                     <label class="form-label" for="name" th:text="#{name}"></label> :
-                    <input class="form-control" name="name" id="name" th:field="*{name}"/>
+                    <input class="form-control" name="name" id="name" th:field="*{name}" required pattern="^(\S).{1,120}(\S)$"/>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="liner" th:text="#{liner}"></label> :
@@ -45,13 +45,13 @@
                 <div class="mb-3">
                     <label class="form-label" for="price" th:text="#{price}"></label> :
                     <div class="input-group">
-                        <input class="form-control" type="number" step="0.01" id="price" th:field="*{price}"/>
+                        <input class="form-control" type="number" step="0.01" id="price" th:field="*{price}" required pattern="^([123456789]|(0.))[01234567890.]+$"/>
                         <span class="input-group-text">UAH</span>
                     </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="description" th:text="#{description}"></label> :
-                    <textarea class="form-control" id="description" th:field="*{description}"></textarea>
+                    <textarea class="form-control" id="description" th:field="*{description}" required></textarea>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="curr_image_name" th:text="#{currentImage}"></label> :
@@ -65,7 +65,7 @@
                     <label class="form-label" for="status" th:text="#{status}"></label> :
                     <select class="form-select" id="status" th:field="*{status.id}">
                         <option th:each="status : ${statusList}" th:value="${status.id}"
-                                th:text="${status.name}" th:selected="${status.id == cruiseDTO.status.id}"></option>
+                                th:text="#{${status.name}}" th:selected="${status.id == cruiseDTO.status.id}"></option>
                     </select>
                 </div>
                 <div class="mb-3">

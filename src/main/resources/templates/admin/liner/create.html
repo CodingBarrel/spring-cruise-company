@@ -18,11 +18,11 @@
             <form method="POST" th:action="@{/admin-liner}" th:object="${linerDTO}">
                 <div class="mb-3">
                     <label class="form-label" for="name" th:text="#{name}"></label> :
-                    <input class="form-control" name="name" id="name" th:field="*{name}" autofocus/>
+                    <input class="form-control" name="name" id="name" th:field="*{name}" autofocus required pattern="^(\S).{1,120}(\S)$" />
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="passengerCapacity" th:text="#{passengerCapacity}"></label> :
-                    <input class="form-control" id="passengerCapacity" th:field="*{passengerCapacity}"/>
+                    <input class="form-control" type="number" id="passengerCapacity" th:field="*{passengerCapacity}" required min="0" step="1"/>
                 </div>
                 <div class="mb-3">
                     <input class="btn btn-primary" type="submit" th:value="#{insert}">

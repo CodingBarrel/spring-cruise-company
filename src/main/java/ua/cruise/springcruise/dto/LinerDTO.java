@@ -1,10 +1,9 @@
 package ua.cruise.springcruise.dto;
 
 import lombok.*;
+import ua.cruise.springcruise.validation.NameMatch;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,11 +14,11 @@ public class LinerDTO {
 
     private Long id;
 
-    @NotBlank
+    @NameMatch
     private String name;
 
     @NotNull
-    @Min(value = 1)
+    @PositiveOrZero
     private int passengerCapacity;
 
 }

@@ -1,13 +1,11 @@
 package ua.cruise.springcruise.service;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import ua.cruise.springcruise.entity.Cruise;
 import ua.cruise.springcruise.entity.dictionary.CruiseStatus;
@@ -20,8 +18,8 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+@Log4j2
 @Service
 public class CruiseService {
     private final CruiseRepository cruiseRepository;
@@ -53,6 +51,15 @@ public class CruiseService {
         return cruiseRepository.findAll(specification, pageable);
     }
 
+    public Cruise findByName(String name) {
+        return cruiseRepository.findByName(name).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed to find cruise by name: not exists"));
+    }
+
+    public boolean existsByName(String name) {
+        return cruiseRepository.existsByName(name);
+    }
+
     private Predicate getDurationWithSign(Constants.equalitySign durationSign, int duration, CriteriaBuilder criteriaBuilder, Expression<Integer> timeDiff) {
         duration = duration * 86400;
         if (durationSign != null && durationSign.equals(Constants.equalitySign.GT))
@@ -72,30 +79,35 @@ public class CruiseService {
             return criteriaBuilder.equal(root.get("startDateTime"), startDateTime);
     }
 
-    public Optional<Cruise> findById(long id) {
-        return cruiseRepository.findById(id);
+    public Cruise findById(long id) {
+        return cruiseRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed to find cruise by id: not exists [id=" + id + "]"));
     }
 
-    @Transactional
     public void update(Cruise cruise) {
+        if (!cruiseRepository.existsById(cruise.getId()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to update cruise: not exists [id=" + cruise.getId() + "]");
         cruiseRepository.save(cruise);
     }
 
-    @Transactional
     public void create(Cruise cruise) {
+        if (cruise.getId() != null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to create cruise: already exists [id=" + cruise.getId() + "]");
         cruiseRepository.save(cruise);
     }
 
     public List<CruiseStatus> findAllStatuses() {
-        return statusDictRepository.findAll();
+        return statusDictRepository.findByOrderByIdAsc();
     }
 
     public CruiseStatus findStatusById(long id) {
         return statusDictRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
+                new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to find cruise status by id " + id));
     }
 
     public void delete(long id) {
+        if (!cruiseRepository.existsById(id))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to find cruise by id " + id + " for delete");
         cruiseRepository.deleteById(id);
     }
 }

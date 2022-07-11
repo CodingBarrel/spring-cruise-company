@@ -28,7 +28,7 @@
             <td th:text="${ticket.cruise.id}"></td>
             <td th:text="${ticket.user.id}"></td>
             <td th:text="${ticket.price}"></td>
-            <td th:text="${ticket.status.name}"></td>
+            <td th:text="#{${ticket.status.name}}"></td>
             <td>
                 <a th:href="@{/admin-ticket/{id}/edit(id=${ticket.id})}" th:text="#{edit}"></a>
             </td>

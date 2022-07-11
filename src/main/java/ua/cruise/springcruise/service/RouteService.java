@@ -1,15 +1,16 @@
 package ua.cruise.springcruise.service;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import ua.cruise.springcruise.entity.Route;
 import ua.cruise.springcruise.repository.RouteRepository;
 
 import java.util.List;
 
+@Log4j2
 @Service
 public class RouteService {
     private final RouteRepository routeRepository;
@@ -19,26 +20,39 @@ public class RouteService {
         this.routeRepository = routeRepository;
     }
 
-    public List<Route> findAll(){
+    public List<Route> findAll() {
         return routeRepository.findAll();
     }
 
-    public Route findById(long id){
-        return routeRepository.findById(id).orElseThrow( () ->
-                new ResponseStatusException(HttpStatus.BAD_REQUEST, "Route not found"));
+    public boolean existsByName(String name) {
+        return routeRepository.existsByName(name);
     }
 
-    @Transactional
-    public void update(Route route){
+    public Route findById(long id) {
+        return routeRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed to find route: not exists [id=" + id + "]"));
+    }
+
+    public Route findByName(String name){
+        return routeRepository.findByName(name).orElseThrow( () ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed to find route: not exists [name=" + name + "]"));
+    }
+
+    public void update(Route route) {
+        if (!routeRepository.existsById(route.getId()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to update route: not exists [id=" + route.getId() + "]");
         routeRepository.save(route);
     }
 
-    @Transactional
-    public void create(Route route){
+    public void create(Route route) {
+        if (routeRepository.existsById(route.getId()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to create route: already exists [id=" + route.getId() + "]");
         routeRepository.save(route);
     }
 
-    public void delete(long id){
+    public void delete(long id) {
+        if (routeRepository.existsById(id))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to delete route: not exists [id=" + id + "]");
         routeRepository.deleteById(id);
     }
 }

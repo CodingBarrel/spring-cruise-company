@@ -18,12 +18,12 @@
             <form method="post" action="/auth/signUp" th:object="${userDTO}">
                 <div class="mb-3">
                     <label class="form-label" for="login" th:text="#{login}"></label>
-                    <input class="form-control" id="login" placeholder="Enter your login here" th:field="*{login}" autofocus>
+                    <input class="form-control" id="login" placeholder="Enter your login here" th:field="*{login}" autofocus required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="password" th:text="#{password}"></label>
                     <input class="form-control" type="password" id="password"
-                           placeholder="Enter your password here" th:field="*{password}">
+                           placeholder="Enter your password here" th:field="*{password}" required>
                 </div>
                 <div class="mb-3">
                     <input class="btn btn-primary" type="submit" th:value="#{signUp}">
