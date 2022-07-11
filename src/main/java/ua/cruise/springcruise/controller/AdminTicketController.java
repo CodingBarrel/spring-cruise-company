@@ -59,4 +59,10 @@ public class AdminTicketController {
         }
         return REDIRECT_URL;
     }
+
+    @GetMapping("/statusUpdate")
+    public String statusUpdate(){
+        ticketService.updateAllOutdatedTicketStatuses();
+        return REDIRECT_URL;
+    }
 }

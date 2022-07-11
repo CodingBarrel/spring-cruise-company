@@ -3,15 +3,18 @@ package ua.cruise.springcruise.service;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ua.cruise.springcruise.entity.Cruise;
 import ua.cruise.springcruise.entity.Ticket;
 import ua.cruise.springcruise.entity.dictionary.TicketStatus;
+import ua.cruise.springcruise.repository.CruiseRepository;
 import ua.cruise.springcruise.repository.TicketRepository;
 import ua.cruise.springcruise.repository.dict.TicketStatusRepository;
 import ua.cruise.springcruise.util.Constants;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Log4j2
@@ -19,11 +22,13 @@ import java.util.List;
 public class TicketService {
     private final TicketRepository ticketRepository;
     private final TicketStatusRepository statusDictRepository;
+    private final CruiseRepository cruiseRepository;
 
     @Autowired
-    public TicketService(TicketRepository ticketRepository, TicketStatusRepository statusDictRepository) {
+    public TicketService(TicketRepository ticketRepository, TicketStatusRepository statusDictRepository, CruiseRepository cruiseRepository) {
         this.ticketRepository = ticketRepository;
         this.statusDictRepository = statusDictRepository;
+        this.cruiseRepository = cruiseRepository;
     }
 
     public List<Ticket> findAll() {
@@ -82,6 +87,13 @@ public class TicketService {
     public TicketStatus findStatusById(long id) {
         return statusDictRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to find status by id: not exists [id=" + id + "]"));
+    }
+
+    @Scheduled(cron = Constants.TICKET_AUTOUPDATE_DELAY)
+    public void updateAllOutdatedTicketStatuses(){
+        List<Cruise> cruiseList = cruiseRepository.findByStartDateTimeBefore(LocalDateTime.now());
+        int updatedTicketsCount = ticketRepository.updateTicketStatusWhereCruise(findStatusById(Constants.TICKET_OUTDATED_STATUS_ID), cruiseList);
+        log.info("Ticket statuses updated successfully. Result: {} modified as outdated", updatedTicketsCount);
     }
 
 }

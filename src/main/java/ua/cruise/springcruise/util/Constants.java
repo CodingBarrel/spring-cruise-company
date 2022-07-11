@@ -13,6 +13,12 @@ public final class Constants {
     public static final long TICKET_CANCELED_STATUS = 5L;
     public static final long CRUISE_ACTUAL_STATUS_LESS_THAN = 3L;
     public static final long TICKET_ACTUAL_STATUS_LESS_THAN = 4L;
+    public static final long CRUISE_STARTED_STATUS_ID = 4L;
+    public static final long CRUISE_ENDED_STATUS_ID = 5L;
+    public static final long TICKET_OUTDATED_STATUS_ID = 5L;
+
+    public static final String CRUISE_AUTOUPDATE_DELAY = "0 0 * * * *";
+    public static final String TICKET_AUTOUPDATE_DELAY = "0 30 * * * *";
 
     public static final String DATA_PATH = "D:/data/spring/";
 

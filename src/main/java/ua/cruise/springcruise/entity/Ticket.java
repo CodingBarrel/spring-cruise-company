@@ -18,7 +18,7 @@ public class Ticket {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cruise_id")
     private Cruise cruise;
 

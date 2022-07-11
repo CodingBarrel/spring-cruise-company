@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ua.cruise.springcruise.entity.Cruise;
@@ -109,5 +110,14 @@ public class CruiseService {
         if (!cruiseRepository.existsById(id))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to find cruise by id " + id + " for delete");
         cruiseRepository.deleteById(id);
+    }
+
+    @Scheduled(cron = Constants.CRUISE_AUTOUPDATE_DELAY)
+    public void updateAllStartedAndEndedCruiseStatuses(){
+        int startedCruisesCount = cruiseRepository.updateStartedCruises(statusDictRepository.findById(Constants.CRUISE_STARTED_STATUS_ID).orElseThrow( () ->
+                new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to find status for all started cruise statuses update")),LocalDateTime.now());
+        int endedCruisesCount = cruiseRepository.updateEndedCruises(statusDictRepository.findById(Constants.CRUISE_ENDED_STATUS_ID).orElseThrow( () ->
+                new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to find status for all ended cruise statuses update")), LocalDateTime.now());
+        log.info("Cruise statuses updated successfully. Result: {} started and {} ended cruises modifed", startedCruisesCount, endedCruisesCount);
     }
 }

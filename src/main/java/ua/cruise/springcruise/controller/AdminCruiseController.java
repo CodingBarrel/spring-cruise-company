@@ -145,4 +145,10 @@ public class AdminCruiseController {
         cruiseService.delete(id);
         return REDIRECT_URL;
     }
+
+    @GetMapping("/statusUpdate")
+    public String statusUpdate(){
+        cruiseService.updateAllStartedAndEndedCruiseStatuses();
+        return REDIRECT_URL;
+    }
 }

@@ -7,6 +7,7 @@ import ua.cruise.springcruise.entity.dictionary.CruiseStatus;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -48,4 +49,6 @@ public class Cruise {
 
     private String imageName;
 
+    @OneToMany(mappedBy = "cruise", cascade = CascadeType.ALL)
+    private List<Ticket> ticketList;
 }
