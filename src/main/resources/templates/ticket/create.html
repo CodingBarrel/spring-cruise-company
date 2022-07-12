@@ -15,7 +15,8 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-6">
-            <form method="post" th:action="@{/ticket/{id} (id=${ticketDTO.cruise.id})}" enctype="multipart/form-data" th:object="${ticketDTO}">
+            <form method="post" th:action="@{/ticket/{id} (id=${ticketDTO.cruise.id})}" enctype="multipart/form-data"
+                  th:object="${ticketDTO}">
                 <p><span th:text="#{login}"></span>:<span th:text="${ticketDTO.user.login}"></span></p>
                 <p><span th:text="#{name}"></span>:<span th:text="${ticketDTO.cruise.name}"></span></p>
                 <p><span th:text="#{price}"></span>:<span th:text="${ticketDTO.cruise.price}"></span></p>
@@ -23,7 +24,8 @@
                     <label class="form-label" for="position" th:text="#{position}"></label> :
                     <select class="form-select-sm" id="position" th:field="*{position}" autofocus required>
                         <option th:each="pos : ${#numbers.sequence(1, ticketDTO.cruise.liner.passengerCapacity)}"
-                                th:value="${pos}" th:text="${pos}"></option>
+                                th:value="${pos}" th:text="${pos}"
+                                th:disabled="${ticketList.^[position == __${pos}__]}"></option>
                     </select>
                 </div>
                 <div class="mb-3">
