@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -25,18 +26,20 @@ import ua.cruise.springcruise.util.Constants;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Log4j2
 @Controller
 @RequestMapping("/admin-cruise")
-public class AdminCruiseController {
+public class AdminCruiseController implements BaseController {
     private final CruiseService cruiseService;
     private final LinerService linerService;
     private final RouteService routeService;
     private final StorageService storageService;
     private final EntityMapper entityMapper;
+
+    protected static final Map<Long, String> currentlyModifiedCruises = new ConcurrentReferenceHashMap<>();
 
 
     private static final String REDIRECT_URL = "redirect:/admin-cruise";
@@ -59,6 +62,7 @@ public class AdminCruiseController {
 
     @GetMapping("/{id}/edit")
     public String updateForm(@PathVariable Long id, Model model) {
+        checkModifiedObjectsConflict(currentlyModifiedCruises, id);
         Cruise cruise = cruiseService.findById(id);
         CruiseDTO cruiseDTO = entityMapper.cruiseToDTO(cruise);
         List<Liner> linerList = linerService.findAll();
@@ -68,13 +72,14 @@ public class AdminCruiseController {
         model.addAttribute("linerList", linerList);
         model.addAttribute("routeList", routeList);
         model.addAttribute("statusList", statusList);
-
         return "admin/cruise/update";
     }
+
 
     @PatchMapping("/{id}")
     public String update(@PathVariable("id") long id, @ModelAttribute("cruiseDTO") @Valid CruiseDTO cruiseDTO,
                          BindingResult result, @RequestParam(value = "image", required = false) MultipartFile file) {
+        checkModifiedObjectsConflict(currentlyModifiedCruises, id);
         if (result.hasErrors())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CruiseDTO is not valid");
         Cruise cruise = entityMapper.dtoToCruise(cruiseDTO);
@@ -101,6 +106,7 @@ public class AdminCruiseController {
             cruise.setImageName(cruiseService.findById(cruise.getId()).getImageName());
             cruiseService.update(cruise);
         }
+        currentlyModifiedCruises.remove(id);
         return REDIRECT_URL;
     }
 
@@ -142,7 +148,18 @@ public class AdminCruiseController {
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Long id) {
+        checkModifiedObjectsConflict(currentlyModifiedCruises, id);
         cruiseService.delete(id);
+        currentlyModifiedCruises.remove(id);
+        return REDIRECT_URL;
+    }
+
+    @GetMapping("/statusUpdate")
+    public String statusUpdate() {
+        if (currentlyModifiedCruises.isEmpty())
+            cruiseService.updateAllStartedAndEndedCruiseStatuses();
+        else
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Failed to force update all cruise statuses: cruise(s) is being modified");
         return REDIRECT_URL;
     }
 }

@@ -2,8 +2,10 @@ package ua.cruise.springcruise.controller;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,13 +16,16 @@ import ua.cruise.springcruise.util.EntityMapper;
 import ua.cruise.springcruise.service.TicketService;
 
 import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @Controller
 @RequestMapping("/admin-ticket")
-public class AdminTicketController {
+public class AdminTicketController implements BaseController {
     private final TicketService ticketService;
     private final EntityMapper mapper;
+
+    protected static final Map<Long, String> currentlyModifiedTickets = new ConcurrentReferenceHashMap<>();
 
     private static final String REDIRECT_URL = "redirect:/admin-ticket";
 
@@ -39,6 +44,7 @@ public class AdminTicketController {
 
     @GetMapping("/{id}/edit")
     public String updateForm(@PathVariable Long id, Model model) {
+        checkModifiedObjectsConflict(currentlyModifiedTickets, id);
         Ticket ticket = ticketService.findById(id);
         TicketDTO ticketDTO = mapper.ticketToDTO(ticket);
         List<TicketStatus> statusList = ticketService.findStatusDict();
@@ -49,6 +55,7 @@ public class AdminTicketController {
 
     @PatchMapping("/{id}")
     public String update(@PathVariable("id") Long id, @ModelAttribute("ticketDTO") TicketDTO ticketDTO, BindingResult result) {
+        checkModifiedObjectsConflict(currentlyModifiedTickets, id);
         Ticket ticket = ticketService.findById(id);
         TicketStatus status = ticketService.findStatusById(ticketDTO.getStatus().getId());
         ticket.setStatus(status);
@@ -57,6 +64,15 @@ public class AdminTicketController {
         } catch (ResponseStatusException ex) {
             ex.printStackTrace();
         }
+        currentlyModifiedTickets.remove(id);
+        return REDIRECT_URL;
+    }
+
+    @GetMapping("/statusUpdate")
+    public String statusUpdate() {
+        if (currentlyModifiedTickets.isEmpty())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Failed to force update all ticket statuses: tickets(s) is being modified");
+        ticketService.updateAllOutdatedTicketStatuses();
         return REDIRECT_URL;
     }
 }

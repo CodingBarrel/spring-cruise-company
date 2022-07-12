@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,15 +19,18 @@ import ua.cruise.springcruise.service.RouteService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Log4j2
 @Controller
 @RequestMapping("/admin-route")
-public class AdminRouteController {
+public class AdminRouteController implements BaseController {
     private final RouteService routeService;
     private final RoutePointService routePointService;
     private final EntityMapper mapper;
+
+    protected static final Map<Long, String> currentlyModifiedRoutes = new ConcurrentReferenceHashMap<>();
 
     private static final String REDIRECT_URL = "redirect:/admin-route";
 
@@ -47,6 +51,7 @@ public class AdminRouteController {
 
     @GetMapping("/{id}/edit")
     public String updateForm(@PathVariable Long id, Model model) {
+        checkModifiedObjectsConflict(currentlyModifiedRoutes, id);
         Route route = routeService.findById(id);
         RouteDTO routeDTO = mapper.routeToDTO(route);
         model.addAttribute("routeDTO", routeDTO);
@@ -55,6 +60,7 @@ public class AdminRouteController {
 
     @PatchMapping("/{id}")
     public String update(@PathVariable("id") Long id, @ModelAttribute("routeDTO") @Valid RouteDTO routeDTO, BindingResult result) {
+        checkModifiedObjectsConflict(currentlyModifiedRoutes, id);
         if (result.hasErrors())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "RouteDTO is not valid");
         Route route = mapper.dtoToRoute(routeDTO);
@@ -63,6 +69,7 @@ public class AdminRouteController {
                 !Objects.equals(routeService.findByName(route.getName()).getId(), route.getId()))
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Failed to update route [id=" + id + "]");
         routeService.update(route);
+        currentlyModifiedRoutes.remove(id);
         return REDIRECT_URL;
     }
 
@@ -90,7 +97,9 @@ public class AdminRouteController {
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Long id) {
+        checkModifiedObjectsConflict(currentlyModifiedRoutes, id);
         routeService.delete(id);
+        currentlyModifiedRoutes.remove(id);
         return REDIRECT_URL;
     }
 
@@ -105,6 +114,7 @@ public class AdminRouteController {
     @GetMapping("/{routeId}/point/{pointId}/edit")
     public String pointUpdateForm(@PathVariable("routeId") Long routeId,
                                   @PathVariable("pointId") Long pointId, Model model) {
+        checkModifiedObjectsConflict(currentlyModifiedRoutes, routeId);
         RoutePoint routePoint = routePointService.findById(pointId);
         RoutePointDTO routePointDTO = mapper.routePointToDTO(routePoint);
         List<RoutePoint> routePointList = routePointService.findByRouteId(routeId);
@@ -117,6 +127,7 @@ public class AdminRouteController {
     public String pointUpdate(@PathVariable("routeId") Long routeId,
                               @PathVariable("pointId") Long pointId,
                               @ModelAttribute("routePointDTO") @Valid RoutePointDTO routePointDTO, BindingResult result) {
+        checkModifiedObjectsConflict(currentlyModifiedRoutes, routeId);
         if (result.hasErrors())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "RoutepointDTO is not valid");
         RoutePoint routePoint = mapper.dtoToRoutePoint(routePointDTO);
@@ -130,11 +141,13 @@ public class AdminRouteController {
         } catch (ResponseStatusException ex) {
             ex.printStackTrace();
         }
+        currentlyModifiedRoutes.remove(routeId);
         return REDIRECT_URL + "/" + routeId + "/point";
     }
 
     @PostMapping("/{routeId}/point")
     public String pointCreate(@PathVariable Long routeId) {
+        checkModifiedObjectsConflict(currentlyModifiedRoutes, routeId);
         try {
             RoutePoint routePoint = new RoutePoint();
             Route route = routeService.findById(routeId);
@@ -149,7 +162,9 @@ public class AdminRouteController {
     @DeleteMapping("/{routeId}/point/{pointId}")
     public String pointDelete(@PathVariable("routeId") Long routeId,
                               @PathVariable("pointId") Long pointId) {
+        checkModifiedObjectsConflict(currentlyModifiedRoutes, routeId);
         routePointService.delete(pointId);
+        currentlyModifiedRoutes.remove(routeId);
         return REDIRECT_URL + "/" + routeId + "/point";
     }
 }

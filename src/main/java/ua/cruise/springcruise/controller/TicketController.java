@@ -93,6 +93,8 @@ public class TicketController {
         ticket.setUser(user);
         ticket.setPrice(cruise.getPrice());
         ticket.setStatus(ticketService.findStatusById(Constants.TICKET_DEFAULT_STATUS_ID));
+        if (ticketService.exists(cruise, ticket.getPosition()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to create ticket: position already taken [pos=" + ticket.getPosition() + "]");
         Path fileDirectory;
         String fileName;
         try {

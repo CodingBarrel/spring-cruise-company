@@ -4,7 +4,6 @@ import lombok.*;
 import ua.cruise.springcruise.entity.RoutePoint;
 import ua.cruise.springcruise.validation.NameMatch;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @NoArgsConstructor
@@ -19,6 +18,5 @@ public class RouteDTO {
     @NameMatch
     private String name;
 
-    @NotNull
     private List<RoutePoint> routePointList;
 }

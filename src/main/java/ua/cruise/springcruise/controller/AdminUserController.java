@@ -4,6 +4,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ua.cruise.springcruise.dto.UserDTO;
@@ -13,15 +14,18 @@ import ua.cruise.springcruise.util.EntityMapper;
 import ua.cruise.springcruise.service.UserService;
 
 import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @Controller
 @RequestMapping("/admin-user")
-public class AdminUserController {
+public class AdminUserController implements BaseController {
     private final UserService userService;
     private final EntityMapper mapper;
 
-    private static final String REDIRECT_URL = "redirect:admin-route/";
+    protected static final Map<Long, String> currentlyModifiedUsers = new ConcurrentReferenceHashMap<>();
+
+    private static final String REDIRECT_URL = "redirect:/admin-user";
 
     @Autowired
     public AdminUserController(UserService userService, EntityMapper mapper) {
@@ -38,6 +42,7 @@ public class AdminUserController {
 
     @GetMapping("/{id}/edit")
     public String updateForm(@PathVariable Long id, Model model) {
+        checkModifiedObjectsConflict(currentlyModifiedUsers, id);
         User user = userService.findById(id);
         UserDTO userDTO = mapper.userToDTO(user);
         List<UserRole> roleDict = userService.findRoleDict();
@@ -48,6 +53,7 @@ public class AdminUserController {
 
     @PatchMapping("/{id}")
     public String update(@PathVariable("id") Long id, @ModelAttribute("userDTO") UserDTO userDTO) {
+        checkModifiedObjectsConflict(currentlyModifiedUsers, id);
         User user = userService.findById(id);
         UserRole role = userService.findRoleById(userDTO.getRole().getId());
         user.setRole(role);
@@ -56,6 +62,7 @@ public class AdminUserController {
         } catch (ResponseStatusException ex) {
             ex.printStackTrace();
         }
+        currentlyModifiedUsers.remove(id);
         return REDIRECT_URL;
     }
 
