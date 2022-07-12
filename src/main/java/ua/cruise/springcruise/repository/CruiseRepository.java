@@ -14,6 +14,8 @@ import java.util.Optional;
 
 public interface CruiseRepository extends JpaRepository<Cruise, Long>, JpaSpecificationExecutor<Cruise> {
 
+    List<Cruise> findByOrderByIdAsc();
+
     Optional<Cruise> findByName(String name);
 
     boolean existsByName(String name);
@@ -30,7 +32,6 @@ public interface CruiseRepository extends JpaRepository<Cruise, Long>, JpaSpecif
 
     List<Cruise> findByStartDateTimeBefore(LocalDateTime startDateTime);
 
-
-
+    long countByIdAndTicketList_Status_IdLessThan(Long cruiseId, Long statusId);
 
 }

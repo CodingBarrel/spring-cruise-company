@@ -59,8 +59,10 @@
                         th:text="${point.name}"></li>
                 </ol>
             </div>
-            <a sec:authorize="isAuthenticated()" class="btn btn-success" th:href="@{/ticket/{id}/new (id=${cruise.id})}"
+            <a sec:authorize="isAuthenticated()" th:if="${cruise.status.id} == 2" class="btn btn-success"
+               th:href="@{/ticket/{id}/new (id=${cruise.id})}"
                th:text="#{order}"></a>
+            <p class="text-warning" th:unless="${cruise.status.id} == 2" th:text="#{cruiseNotActual}"></p>
         </div>
         <div class="col">
             <img th:src="@{/data/cruise/{imageName} (imageName=${cruise.imageName})}" style="width:500px"

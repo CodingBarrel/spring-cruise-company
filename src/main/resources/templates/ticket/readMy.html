@@ -34,7 +34,7 @@
             <td th:text="${ticket.price} + UAH"></td>
             <td th:text="#{${ticket.status.name}}"></td>
             <td>
-                <div class="row">
+                <div th:if="${ticket.status.id} == 2" class="row">
                     <div class="col">
                         <form th:method="PATCH" th:action="@{/ticket/{id} (id=${ticket.id})}">
                             <input type="hidden" name="status" value="3">

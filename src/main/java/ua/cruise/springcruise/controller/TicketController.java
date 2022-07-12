@@ -54,18 +54,6 @@ public class TicketController {
         return "ticket/readMy";
     }
 
-    @PatchMapping("/{id}")
-    public String update(@PathVariable("id") Long id, @RequestParam("status") String statusId) {
-        Ticket ticket = ticketService.findById(id);
-        ticket.setStatus(ticketService.findStatusById(Long.parseLong(statusId)));
-        try {
-            ticketService.update(ticket);
-        } catch (ResponseStatusException ex) {
-            ex.printStackTrace();
-        }
-        return REDIRECT_URL;
-    }
-
     @GetMapping("{id}/new")
     public String createForm(@PathVariable("id") Long id, Model model) {
         TicketDTO ticketDTO = new TicketDTO();
@@ -102,6 +90,7 @@ public class TicketController {
             fileName = storageService.save(fileDirectory, fileExt, file);
             ticket.setImageName(fileName);
             ticketService.create(ticket);
+            cruiseService.updateCruiseStatusDueToCapacity(cruise);
         } catch (ResponseStatusException | IOException ex) {
             log.info("Failed to save image for ticket", ex);
         }
@@ -111,12 +100,14 @@ public class TicketController {
     @GetMapping("{id}/pay")
     public String pay(@PathVariable Long id) {
         ticketService.pay(id);
+        cruiseService.updateCruiseStatusDueToCapacity(ticketService.findById(id).getCruise());
         return REDIRECT_URL;
     }
 
     @GetMapping("{id}/cancel")
     public String cancel(@PathVariable Long id) {
         ticketService.cancel(id);
+        cruiseService.updateCruiseStatusDueToCapacity(ticketService.findById(id).getCruise());
         return REDIRECT_URL;
     }
 }

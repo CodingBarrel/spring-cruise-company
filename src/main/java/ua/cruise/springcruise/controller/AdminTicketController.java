@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ua.cruise.springcruise.dto.TicketDTO;
 import ua.cruise.springcruise.entity.Ticket;
 import ua.cruise.springcruise.entity.dictionary.TicketStatus;
+import ua.cruise.springcruise.service.CruiseService;
 import ua.cruise.springcruise.util.EntityMapper;
 import ua.cruise.springcruise.service.TicketService;
 
@@ -23,6 +24,7 @@ import java.util.Map;
 @RequestMapping("/admin-ticket")
 public class AdminTicketController implements BaseController {
     private final TicketService ticketService;
+    private final CruiseService cruiseService;
     private final EntityMapper mapper;
 
     protected static final Map<Long, String> currentlyModifiedTickets = new ConcurrentReferenceHashMap<>();
@@ -30,8 +32,9 @@ public class AdminTicketController implements BaseController {
     private static final String REDIRECT_URL = "redirect:/admin-ticket";
 
     @Autowired
-    public AdminTicketController(TicketService ticketService, EntityMapper mapper) {
+    public AdminTicketController(TicketService ticketService, CruiseService cruiseService, EntityMapper mapper) {
         this.ticketService = ticketService;
+        this.cruiseService = cruiseService;
         this.mapper = mapper;
     }
 
@@ -61,6 +64,7 @@ public class AdminTicketController implements BaseController {
         ticket.setStatus(status);
         try {
             ticketService.update(ticket);
+            cruiseService.updateCruiseStatusDueToCapacity(ticketService.findById(id).getCruise());
         } catch (ResponseStatusException ex) {
             ex.printStackTrace();
         }

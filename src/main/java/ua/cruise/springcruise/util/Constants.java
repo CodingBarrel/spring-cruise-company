@@ -11,7 +11,10 @@ public final class Constants {
     public static final long TICKET_DEFAULT_STATUS_ID = 1L;
     public static final long TICKET_PAYED_STATUS = 3L;
     public static final long TICKET_CANCELED_STATUS = 5L;
-    public static final long CRUISE_ACTUAL_STATUS_LESS_THAN = 3L;
+    public static final long CRUISE_ACTUAL_STATUS_MORE_THAN = 1L;
+    public static final long CRUISE_ACTUAL_STATUS = 2L;
+    public static final long CRUISE_FULL_STATUS = 3L;
+    public static final long CRUISE_OUTDATED_STATUS_ID = 7;
     public static final long TICKET_ACTUAL_STATUS_LESS_THAN = 4L;
     public static final long CRUISE_STARTED_STATUS_ID = 4L;
     public static final long CRUISE_ENDED_STATUS_ID = 5L;

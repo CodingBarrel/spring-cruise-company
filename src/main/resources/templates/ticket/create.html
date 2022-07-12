@@ -30,10 +30,12 @@
                 </div>
                 <div class="mb-3">
                     <label class="input-group-text" for="image" th:text="#{image}"></label> :
-                    <input class="form-control-sm" type="file" id="image" name="image">
+                    <input class="form-control-sm" type="file" id="image" name="image" accept=".jpeg, .jpg, .png" required>
                 </div>
                 <div class="mb-3">
-                    <input class="btn btn-primary" type="submit" th:value="#{orderTicket}">
+                    <input th:if="${ticketDTO.cruise.status.id} == 2" class="btn btn-primary" type="submit"
+                           th:value="#{orderTicket}">
+                    <p class="text-warning" th:unless="${ticketDTO.cruise.status.id} == 2" th:text="#{cruiseNotActual}"></p>
                 </div>
             </form>
             <a class="btn btn-secondary"

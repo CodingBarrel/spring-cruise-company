@@ -63,7 +63,7 @@
                 <div class="mb-3">
                     <p th:if="${#fields.hasErrors('imageName')}" th:errors="*{imageName}" class="alert alert-danger" role="alert"></p>
                     <label class="form-label" for="imageName" th:text="#{image}"></label> :
-                    <input class="form-control" type="file" id="imageName" name="image" accept=".jpeg, .png" required/>
+                    <input class="form-control" type="file" id="imageName" name="image" accept=".jpeg, .jpg, .png" required/>
                 </div>
                 <div class="mb-3">
                     <input class="form btn btn-primary align-items-lg-center" type="submit" th:value="#{insert}">
