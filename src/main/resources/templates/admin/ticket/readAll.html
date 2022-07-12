@@ -31,7 +31,7 @@
             <td th:text="${ticket.price}"></td>
             <td th:text="#{${ticket.status.name}}"></td>
             <td>
-                <a th:href="@{/admin-ticket/{id}/edit(id=${ticket.id})}" th:text="#{edit}"></a>
+                <a class="btn btn-warning" th:href="@{/admin-ticket/{id}/edit(id=${ticket.id})}" th:text="#{edit}"></a>
             </td>
         </tr>
     </table>

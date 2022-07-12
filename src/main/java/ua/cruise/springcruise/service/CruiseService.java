@@ -33,7 +33,7 @@ public class CruiseService {
     }
 
     public List<Cruise> findAll() {
-        return cruiseRepository.findAll();
+        return cruiseRepository.findByOrderByIdAsc();
     }
 
     public Page<Cruise> findByStartDateTimeAndDuration(Constants.equalitySign dateSign, LocalDateTime startDateTime, Constants.equalitySign durationSign, int duration, int page, int size) {
@@ -46,6 +46,7 @@ public class CruiseService {
             if (duration > 0) {
                 predicateList.add(getDurationWithSign(durationSign, duration, criteriaBuilder, timeDiff));
             }
+            predicateList.add(criteriaBuilder.equal(root.get("status"), Constants.CRUISE_ACTUAL_STATUS));
             query.orderBy(criteriaBuilder.asc((root.get("startDateTime"))));
             return criteriaBuilder.and(predicateList.toArray(new Predicate[0]));
         };
@@ -114,11 +115,23 @@ public class CruiseService {
     }
 
     @Scheduled(cron = Constants.CRUISE_AUTOUPDATE_DELAY)
-    public void updateAllStartedAndEndedCruiseStatuses(){
-        int startedCruisesCount = cruiseRepository.updateStartedCruises(statusDictRepository.findById(Constants.CRUISE_STARTED_STATUS_ID).orElseThrow( () ->
-                new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to find status for all started cruise statuses update")),LocalDateTime.now());
-        int endedCruisesCount = cruiseRepository.updateEndedCruises(statusDictRepository.findById(Constants.CRUISE_ENDED_STATUS_ID).orElseThrow( () ->
+    public void updateAllStartedAndEndedCruiseStatuses() {
+        int startedCruisesCount = cruiseRepository.updateStartedCruises(statusDictRepository.findById(Constants.CRUISE_STARTED_STATUS_ID).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to find status for all started cruise statuses update")), LocalDateTime.now());
+        int endedCruisesCount = cruiseRepository.updateEndedCruises(statusDictRepository.findById(Constants.CRUISE_ENDED_STATUS_ID).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to find status for all ended cruise statuses update")), LocalDateTime.now());
         log.info("Cruise statuses updated successfully. Result: {} started and {} ended cruises modifed", startedCruisesCount, endedCruisesCount);
+    }
+
+
+    public void updateCruiseStatusDueToCapacity(Cruise cruise) {
+        long count = cruiseRepository.countByIdAndTicketList_Status_IdLessThan(cruise.getId(), Constants.TICKET_ACTUAL_STATUS_LESS_THAN);
+        if (count >= cruise.getLiner().getPassengerCapacity() && cruise.getStatus().getId() <= Constants.CRUISE_ACTUAL_STATUS) {
+            cruise.setStatus(findStatusById(Constants.CRUISE_FULL_STATUS));
+            update(cruise);
+        } else if (count < cruise.getLiner().getPassengerCapacity() && cruise.getStatus().getId() == Constants.CRUISE_FULL_STATUS) {
+            cruise.setStatus(findStatusById(Constants.CRUISE_ACTUAL_STATUS));
+            update(cruise);
+        }
     }
 }

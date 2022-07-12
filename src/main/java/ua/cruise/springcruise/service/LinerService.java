@@ -21,7 +21,7 @@ public class LinerService {
     }
 
     public List<Liner> findAll(){
-        return linerRepository.findAll();
+        return linerRepository.findByOrderByIdAsc();
     }
 
     public Liner findById(long id){

@@ -21,7 +21,7 @@ public class RouteService {
     }
 
     public List<Route> findAll() {
-        return routeRepository.findAll();
+        return routeRepository.findByOrderByIdAsc();
     }
 
     public boolean existsByName(String name) {

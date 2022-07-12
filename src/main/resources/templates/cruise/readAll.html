@@ -42,7 +42,7 @@
         </div>
     </div>
 
-    <h5 th:text="#{foundCruises}">: ${requestScope.cruiseCount}</h5>
+    <h5 th:text="#{foundCruises} + ': ' + ${cruiseList.totalElements}"></h5>
     <div th:each="cruise:${cruiseList}" class="cruise-item row mb-2 border-bottom border-3 mt-2">
         <div class="col col-8 align-items-center justify-content-center px-4 mt-2">
             <div class="row">

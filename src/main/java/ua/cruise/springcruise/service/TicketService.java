@@ -32,7 +32,7 @@ public class TicketService {
     }
 
     public List<Ticket> findAll() {
-        return ticketRepository.findAll();
+        return ticketRepository.findByOrderByIdAsc();
     }
 
     public Ticket findById(long id) {
@@ -43,11 +43,11 @@ public class TicketService {
 
 
     public List<Ticket> findByUserId(long id) {
-        return ticketRepository.findByUser_Id(id);
+        return ticketRepository.findByUser_IdOrderByIdAsc(id);
     }
 
     public List<Ticket> findByCruiseActual(Cruise cruise) {
-        return ticketRepository.findByCruiseAndStatus_IdLessThanEqual(cruise, Constants.CRUISE_ACTUAL_STATUS_LESS_THAN);
+        return ticketRepository.findByCruiseAndStatus_IdLessThan(cruise, Constants.TICKET_ACTUAL_STATUS_LESS_THAN);
     }
 
     public boolean exists(Cruise cruise, int position){
