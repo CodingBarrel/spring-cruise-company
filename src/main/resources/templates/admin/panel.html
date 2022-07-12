@@ -33,13 +33,37 @@
         </div>
         <div class="col-2"></div>
         <div class="col-4 ms-4">
-            <span th:text="#{youModifying}" th:remove="tag"></span>:
-            <p th:each="modifyingEntity : ${modifierList}">
-                <span th:text="#{entityName}" th:remove="tag"></span>
-                <span th:text="${modifyingEntity.entityName}"></span>
-                <span th:text="#{entityId}" th:remove="tag"></span>
-                <span th:text="${modifyingEntity.entityId}"></span>
+            <h4 th:text="#{currentlyModifying}"></h4>
+            <span th:text="#{cruise}"></span>:
+            <p th:each="element : ${currentlyModifiedCruises}">
+                <span th:text="#{id} + ' - ' + ${element.key}"></span>,
+                <span th:text="#{user} + ' - ' + ${element.value}"></span>
             </p>
+            <hr>
+            <span th:text="#{liner}"></span>:
+            <p th:each="element : ${currentlyModifiedLiners}">
+                <span th:text="#{id} + ' - ' + ${element.key}"></span>,
+                <span th:text="#{user} + ' - ' + ${element.value}"></span>
+            </p>
+            <hr>
+            <span th:text="#{route}"></span>:
+            <p th:each="element : ${currentlyModifiedRoutes}">
+                <span th:text="#{id} + ' - ' + ${element.key}"></span>,
+                <span th:text="#{user} + ' - ' + ${element.value}"></span>
+            </p>
+            <hr>
+            <span th:text="#{ticket}"></span>:
+            <p th:each="element : ${currentlyModifiedTickets}">
+                <span th:text="#{id} + ' - ' + ${element.key}"></span>,
+                <span th:text="#{user} + ' - ' + ${element.value}"></span>
+            </p>
+            <hr>
+            <span th:text="#{user}"></span>:
+            <p th:each="element : ${currentlyModifiedUsers}">
+                <span th:text="#{id} + ' - ' + ${element.key}"></span>,
+                <span th:text="#{user} + ' - ' + ${element.value}"></span>
+            </p>
+            <hr>
         </div>
     </div>
 </div>
