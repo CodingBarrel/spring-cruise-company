@@ -20,6 +20,7 @@ public class Ticket {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cruise_id")
+    @ToString.Exclude
     private Cruise cruise;
 
     @ManyToOne

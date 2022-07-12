@@ -46,6 +46,7 @@ public class CruiseService {
             if (duration > 0) {
                 predicateList.add(getDurationWithSign(durationSign, duration, criteriaBuilder, timeDiff));
             }
+            query.orderBy(criteriaBuilder.asc((root.get("startDateTime"))));
             return criteriaBuilder.and(predicateList.toArray(new Predicate[0]));
         };
         Pageable pageable = PageRequest.of(page, size);

@@ -50,5 +50,6 @@ public class Cruise {
     private String imageName;
 
     @OneToMany(mappedBy = "cruise", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Ticket> ticketList;
 }

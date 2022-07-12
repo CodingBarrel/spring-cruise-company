@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CruiseRepository extends JpaRepository<Cruise, Long>, JpaSpecificationExecutor<Cruise> {
-    List<Cruise> findByOrderByIdAsc();
 
     Optional<Cruise> findByName(String name);
 
