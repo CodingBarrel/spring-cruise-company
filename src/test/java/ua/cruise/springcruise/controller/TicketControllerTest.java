@@ -3,14 +3,12 @@ package ua.cruise.springcruise.controller;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
 import org.mockito.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -23,7 +21,6 @@ import ua.cruise.springcruise.service.CruiseService;
 import ua.cruise.springcruise.service.StorageService;
 import ua.cruise.springcruise.service.TicketService;
 import ua.cruise.springcruise.util.Constants;
-import ua.cruise.springcruise.util.EntityMapper;
 import ua.cruise.springcruise.util.EntityMapperImpl;
 
 import java.io.IOException;
@@ -225,7 +222,7 @@ class TicketControllerTest {
     void paySuccessCase() {
         Long id = 123123L;
         when(ticketService.findById(id)).thenReturn(testTicket1);
-        ticketController.pay(id);
+        ticketController.changeStatus(id, Constants.TICKET_PAYED_STATUS);
         verify(ticketService, times(1)).pay(anyLong());
     }
 
@@ -233,7 +230,7 @@ class TicketControllerTest {
     void cancelSuccessCase() {
         Long id = 123123L;
         when(ticketService.findById(id)).thenReturn(testTicket1);
-        ticketController.cancel(id);
+        ticketController.changeStatus(id, Constants.TICKET_CANCELED_STATUS);
         verify(ticketService, times(1)).cancel(anyLong());
     }
 }

@@ -81,7 +81,7 @@ public class AdminTicketController implements BaseController {
 
     @GetMapping("/statusUpdate")
     public String statusUpdate() {
-        if (currentlyModifiedTickets.isEmpty())
+        if (!currentlyModifiedTickets.isEmpty())
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Failed to force update all ticket statuses: tickets(s) is being modified");
         ticketService.updateAllOutdatedTicketStatuses();
         return REDIRECT_URL;

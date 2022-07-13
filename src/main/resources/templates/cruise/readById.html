@@ -63,6 +63,7 @@
                th:href="@{/ticket/{id}/new (id=${cruise.id})}"
                th:text="#{order}"></a>
             <p class="text-warning" th:unless="${cruise.status.id} == 2" th:text="#{cruiseNotActual}"></p>
+            <a sec:authorize="!isAuthenticated()" class="btn btn-primary" href="/auth/signIn" th:text="#{signIn}"></a>
         </div>
         <div class="col">
             <img th:src="@{/data/cruise/{imageName} (imageName=${cruise.imageName})}" style="width:500px"

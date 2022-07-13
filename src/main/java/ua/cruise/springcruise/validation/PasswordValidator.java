@@ -10,7 +10,7 @@ import javax.validation.ConstraintValidatorContext;
  * @see PasswordMatch
  */
 
-public class PasswordValidator implements ConstraintValidator<LoginMatch, String> {
+public class PasswordValidator implements ConstraintValidator<PasswordMatch, String> {
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
         return password != null && password.matches("^[a-zA-Z0-9!@#$%^&*()_=+]{6,36}$");

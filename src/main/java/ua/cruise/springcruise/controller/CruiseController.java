@@ -66,6 +66,8 @@ public class CruiseController {
                 durationAsDays = duration * 7;
             else if (durationType.equals(Constants.durationType.MONTHS))
                 durationAsDays = duration * 30;
+            else
+                durationAsDays = duration;
         } catch (IllegalArgumentException | NullPointerException ex) {
             durationType = null;
         }
