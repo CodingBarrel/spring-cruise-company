@@ -6,6 +6,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * A configuration class that contains custom implementation of default settings related to security
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Configuration
+ */
+
 @Configuration
 public class SecurityConfig {
 

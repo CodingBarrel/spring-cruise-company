@@ -7,6 +7,14 @@ import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
+
+/**
+ * Class contains date-time validating annotation implementation
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see DateTimeMatch
+ */
+
 public class DateTimeValidator implements ConstraintValidator<DateTimeMatch, Object> {
 
     private String field;

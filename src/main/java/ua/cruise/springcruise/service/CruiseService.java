@@ -20,6 +20,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A service class that connects controller and model layers, thereby isolating business-logic. Controls requests
+ * related to cruise and it's status.
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Service
+ * @see Cruise
+ */
+
 @Log4j2
 @Service
 public class CruiseService {
@@ -63,6 +72,14 @@ public class CruiseService {
         return cruiseRepository.existsByName(name);
     }
 
+    /**
+     * @param durationSign (in)equality sign of duration
+     * @param duration time (as days) that equals to time difference as <i>durationSign</i>
+     * @param criteriaBuilder object that creates criteria based on input data
+     * @param timeDiff time difference between two date-times
+     * @return predicate with criteria set according to params
+     */
+
     private Predicate getDurationWithSign(Constants.equalitySign durationSign, int duration, CriteriaBuilder criteriaBuilder, Expression<Integer> timeDiff) {
         duration = duration * 86400;
         if (durationSign != null && durationSign.equals(Constants.equalitySign.GT))
@@ -73,6 +90,13 @@ public class CruiseService {
             return criteriaBuilder.equal(timeDiff, duration);
     }
 
+    /**
+     * @param dateSign in(equality) sign of duration
+     * @param startDateTime start date-time for comparision
+     * @param root object that contains database view
+     * @param criteriaBuilder object that creates criteria based on input data
+     * @return predicate with criteria set according to params
+     */
     private Predicate getDateTimeWithSign(Constants.equalitySign dateSign, LocalDateTime startDateTime, Root<Cruise> root, CriteriaBuilder criteriaBuilder) {
         if (dateSign != null && dateSign.equals(Constants.equalitySign.GT))
             return criteriaBuilder.greaterThan(root.get("startDateTime"), startDateTime);

@@ -5,6 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * An controller class that controls authorized as administrators users' requests related to administration panel
+ * (such as currently modified objects) and redirects them to requested services. Controls view layer.
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Controller
+ */
 
 @Log4j2
 @Controller

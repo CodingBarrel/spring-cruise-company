@@ -25,6 +25,14 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
+/**
+ * An controller class that controls authorized users' requests related to ticket (such as create ticket) and redirects
+ * them to requested services. Controls view layer.
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Controller
+ */
+
 @Log4j2
 @Controller
 @RequiredArgsConstructor

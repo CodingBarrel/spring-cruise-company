@@ -10,6 +10,15 @@ import ua.cruise.springcruise.repository.RouteRepository;
 
 import java.util.List;
 
+/**
+ * A service class that connects controller and model layers, thereby isolating business-logic. Controls requests
+ * related to route.
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Service
+ * @see Route
+ */
+
 @Log4j2
 @Service
 public class RouteService {

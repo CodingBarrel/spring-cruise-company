@@ -17,6 +17,15 @@ import ua.cruise.springcruise.util.Constants;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * A service class that connects controller and model layers, thereby isolating business-logic. Controls requests
+ * related to ticket and it's status.
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Service
+ * @see Ticket
+ */
+
 @Log4j2
 @Service
 public class TicketService {

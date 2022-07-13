@@ -19,6 +19,14 @@ import ua.cruise.springcruise.service.TicketService;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * An controller class that controls authorized as administrators users' requests related to ticket administration (
+ * such as CRUD operations) and redirects them to requested services. Controls view layer.
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Controller
+ */
+
 @Log4j2
 @Controller
 @RequiredArgsConstructor
@@ -65,6 +73,11 @@ public class AdminTicketController implements BaseController {
         currentlyModifiedTickets.remove(id);
         return REDIRECT_URL;
     }
+
+    /**
+     * Updates status of all tickets contains cruises that have been started or ended
+     * @return String that contains URL to requested view
+     */
 
     @GetMapping("/statusUpdate")
     public String statusUpdate() {

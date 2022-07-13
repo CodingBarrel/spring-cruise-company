@@ -16,6 +16,14 @@ import ua.cruise.springcruise.service.UserService;
 
 import javax.validation.Valid;
 
+/**
+ * An controller class that controls unauthorized users' requests related to authorization (such as sign up)
+ * and redirects them to requested services. Controls view layer.
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Controller
+ */
+
 @Log4j2
 @Controller
 @RequiredArgsConstructor
