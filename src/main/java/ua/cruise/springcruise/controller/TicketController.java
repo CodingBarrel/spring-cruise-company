@@ -1,7 +1,7 @@
 package ua.cruise.springcruise.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +27,7 @@ import java.util.List;
 
 @Log4j2
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/ticket")
 public class TicketController {
     private final TicketService ticketService;
@@ -35,14 +36,6 @@ public class TicketController {
     private final EntityMapper mapper;
 
     private static final String REDIRECT_URL = "redirect:/ticket";
-
-    @Autowired
-    public TicketController(TicketService ticketService, CruiseService cruiseService, StorageService storageService, EntityMapper mapper) {
-        this.ticketService = ticketService;
-        this.cruiseService = cruiseService;
-        this.storageService = storageService;
-        this.mapper = mapper;
-    }
 
     @GetMapping("")
     public String readByUserId(Model model) {
@@ -92,7 +85,7 @@ public class TicketController {
             ticketService.create(ticket);
             cruiseService.updateCruiseStatusDueToCapacity(cruise);
         } catch (ResponseStatusException | IOException ex) {
-            log.info("Failed to save image for ticket", ex);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to save image for ticket", ex);
         }
         return REDIRECT_URL;
     }

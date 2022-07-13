@@ -45,13 +45,13 @@ public class RouteService {
     }
 
     public void create(Route route) {
-        if (routeRepository.existsById(route.getId()))
+        if (route.getId() != null && routeRepository.existsById(route.getId()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to create route: already exists [id=" + route.getId() + "]");
         routeRepository.save(route);
     }
 
     public void delete(long id) {
-        if (routeRepository.existsById(id))
+        if (!routeRepository.existsById(id))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to delete route: not exists [id=" + id + "]");
         routeRepository.deleteById(id);
     }

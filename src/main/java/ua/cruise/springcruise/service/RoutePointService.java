@@ -39,7 +39,7 @@ public class RoutePointService {
     }
 
     public void create(RoutePoint routePoint){
-        if (routePointRepository.existsById(routePoint.getId()))
+        if (routePoint.getId() != null && routePointRepository.existsById(routePoint.getId()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to create routepoint: already exists [id=" + routePoint.getId() + "]");
         routePointRepository.save(routePoint);
     }

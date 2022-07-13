@@ -45,7 +45,7 @@ public class LinerService {
     }
 
     public void create(Liner liner) throws ResponseStatusException{
-        if (linerRepository.existsById(liner.getId()))
+        if (liner.getId() != null && linerRepository.existsById(liner.getId()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to create liner: liner already exists [id=" + liner.getId() + "]");
         linerRepository.save(liner);
     }
