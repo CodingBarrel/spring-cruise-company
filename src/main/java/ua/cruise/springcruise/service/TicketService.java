@@ -41,7 +41,6 @@ public class TicketService {
     }
 
 
-
     public List<Ticket> findByUserId(long id) {
         return ticketRepository.findByUser_IdOrderByIdAsc(id);
     }
@@ -50,12 +49,12 @@ public class TicketService {
         return ticketRepository.findByCruiseAndStatus_IdLessThan(cruise, Constants.TICKET_ACTUAL_STATUS_LESS_THAN);
     }
 
-    public boolean exists(Cruise cruise, int position){
+    public boolean exists(Cruise cruise, int position) {
         return ticketRepository.existsByCruiseAndPositionAndStatusIdLessThanAllIgnoreCase(cruise, position, Constants.TICKET_ACTUAL_STATUS_LESS_THAN);
     }
 
     public void create(Ticket ticket) {
-        if (ticketRepository.existsById(ticket.getId()))
+        if (ticket.getId() != null && ticketRepository.existsById(ticket.getId()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to create ticket: already exists [id=" + ticket.getId() + "]");
         ticketRepository.save(ticket);
     }
@@ -90,10 +89,12 @@ public class TicketService {
     }
 
     @Scheduled(cron = Constants.TICKET_AUTOUPDATE_DELAY)
-    public void updateAllOutdatedTicketStatuses(){
+    public void updateAllOutdatedTicketStatuses() {
         List<Cruise> cruiseList = cruiseRepository.findByStartDateTimeBefore(LocalDateTime.now());
-        int updatedTicketsCount = ticketRepository.updateTicketStatusWhereCruise(findStatusById(Constants.TICKET_OUTDATED_STATUS_ID), cruiseList);
-        log.info("Ticket statuses updated successfully. Result: {} modified as outdated", updatedTicketsCount);
+        if (!cruiseList.isEmpty()) {
+            int updatedTicketsCount = ticketRepository.updateTicketStatusWhereCruise(findStatusById(Constants.TICKET_OUTDATED_STATUS_ID), cruiseList);
+            log.info("Ticket statuses updated successfully. Result: {} modified as outdated", updatedTicketsCount);
+        }
     }
 
 }

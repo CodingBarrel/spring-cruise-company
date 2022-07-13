@@ -38,7 +38,7 @@ public class UserService {
     }
 
     public void create(User user) {
-        if (userRepository.existsById(user.getId()))
+        if (user.getId() != null && userRepository.existsById(user.getId()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to create user: already exists [id=" + user.getId() + "]");
         userRepository.save(user);
     }

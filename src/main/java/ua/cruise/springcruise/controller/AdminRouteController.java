@@ -1,7 +1,7 @@
 package ua.cruise.springcruise.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +24,7 @@ import java.util.Objects;
 
 @Log4j2
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/admin-route")
 public class AdminRouteController implements BaseController {
     private final RouteService routeService;
@@ -33,14 +34,6 @@ public class AdminRouteController implements BaseController {
     protected static final Map<Long, String> currentlyModifiedRoutes = new ConcurrentReferenceHashMap<>();
 
     private static final String REDIRECT_URL = "redirect:/admin-route";
-
-    @Autowired
-    public AdminRouteController(RouteService routeService, RoutePointService routePointService,
-                                EntityMapper mapper) {
-        this.routeService = routeService;
-        this.routePointService = routePointService;
-        this.mapper = mapper;
-    }
 
     @GetMapping("")
     public String readAll(Model model) {

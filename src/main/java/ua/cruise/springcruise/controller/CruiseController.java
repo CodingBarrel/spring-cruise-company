@@ -1,7 +1,7 @@
 package ua.cruise.springcruise.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,14 +16,10 @@ import java.time.temporal.ChronoUnit;
 
 @Log4j2
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/cruise")
 public class CruiseController {
     private final CruiseService cruiseService;
-
-    @Autowired
-    public CruiseController(CruiseService cruiseService) {
-        this.cruiseService = cruiseService;
-    }
 
     @GetMapping("")
     public String readAll(@RequestParam(value = "dateTimeSign", required = false) String dateTimeSignAsString,
