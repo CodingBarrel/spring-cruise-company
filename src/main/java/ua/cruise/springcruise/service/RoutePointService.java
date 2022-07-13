@@ -10,6 +10,15 @@ import ua.cruise.springcruise.repository.RoutePointRepository;
 
 import java.util.List;
 
+/**
+ * A service class that connects controller and model layers, thereby isolating business-logic. Controls requests
+ * related to route-points.
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Service
+ * @see RoutePoint
+ */
+
 @Log4j2
 @Service
 public class RoutePointService {

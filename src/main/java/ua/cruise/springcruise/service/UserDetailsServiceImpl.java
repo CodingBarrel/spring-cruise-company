@@ -8,6 +8,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ua.cruise.springcruise.repository.UserRepository;
 
+/**
+ * A service class that connects controller and model layers, thereby isolating business-logic.Controls requests
+ * user details for security.
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Service
+ * @see UserDetailsService
+ */
+
 @Log4j2
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

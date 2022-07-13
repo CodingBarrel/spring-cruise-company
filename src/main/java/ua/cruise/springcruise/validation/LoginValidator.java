@@ -3,6 +3,13 @@ package ua.cruise.springcruise.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * Class contains login validating annotation implementation
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see LoginMatch
+ */
+
 public class LoginValidator implements ConstraintValidator<LoginMatch, String> {
     @Override
     public boolean isValid(String name, ConstraintValidatorContext context) {

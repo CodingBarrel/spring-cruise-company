@@ -12,6 +12,15 @@ import ua.cruise.springcruise.repository.dict.UserRoleRepository;
 
 import java.util.List;
 
+/**
+ * A service class that connects controller and model layers, thereby isolating business-logic. Controls requests
+ * related to user and it's status.
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Service
+ * @see User
+ */
+
 @Log4j2
 @Service
 public class UserService {

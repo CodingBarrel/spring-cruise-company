@@ -10,6 +10,16 @@ import ua.cruise.springcruise.repository.LinerRepository;
 
 import java.util.List;
 
+/**
+ * A service class that connects controller and model layers, thereby isolating business-logic. Controls requests
+ * related to liner.
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Service
+ * @see Liner
+ */
+
+
 @Log4j2
 @Service
 public class LinerService {

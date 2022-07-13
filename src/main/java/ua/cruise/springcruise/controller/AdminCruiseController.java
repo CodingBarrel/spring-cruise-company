@@ -2,7 +2,6 @@ package ua.cruise.springcruise.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +27,14 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * An controller class that controls authorized as administrators users' requests related to cruise administration
+ * (such as CRUD operations) and redirects them to requested services. Controls view layer.
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Controller
+ */
 
 @Log4j2
 @Controller
@@ -116,7 +122,7 @@ public class AdminCruiseController implements BaseController {
 
     @PostMapping()
     public String create(@ModelAttribute("cruiseDTO") @Valid CruiseDTO cruiseDTO, BindingResult result,
-                         @RequestParam("image") MultipartFile file, Model model) {
+                         @RequestParam("image") MultipartFile file) {
         if (result.hasErrors()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CruiseDTO is not valid");
         }
@@ -146,6 +152,11 @@ public class AdminCruiseController implements BaseController {
         currentlyModifiedCruises.remove(id);
         return REDIRECT_URL;
     }
+
+    /**
+     * Updates status of all cruises and has been started or ended
+     * @return String that contains URL to requested view
+     */
 
     @GetMapping("/statusUpdate")
     public String statusUpdate() {

@@ -18,17 +18,27 @@
             <form method="post" action="/auth/signUp" th:object="${userDTO}">
                 <div class="mb-3">
                     <label class="form-label" for="login" th:text="#{login}"></label>
-                    <input class="form-control" id="login" placeholder="Enter your login here" th:field="*{login}" autofocus required>
+                    <input class="form-control" id="login" th:field="*{login}"
+                           pattern="^[a-zA-Z0-9_]{3,30}$" autofocus required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="password" th:text="#{password}"></label>
-                    <input class="form-control" type="password" id="password"
-                           placeholder="Enter your password here" th:field="*{password}" required>
+                    <input class="form-control" type="password" id="password" th:field="*{password}"
+                           pattern="^[a-zA-Z0-9!@#$%^&*()_=+]{6,36}$" required>
                 </div>
                 <div class="mb-3">
                     <input class="btn btn-primary" type="submit" th:value="#{signUp}">
                 </div>
             </form>
+        </div>
+        <div class="col-3">
+            <span th:text="#{requirements}"></span>:
+            <ul>
+            <li th:text="#{eng_symbols}"></li>
+            <li th:text="#{numbers}"></li>
+            <li th:text="#{spec_symbols} + ' ( !@#$%^&*()_=+ )'"></li>
+            <li th:text="#{size} + ': 3 ' + #{for_login} + ', 6 ' + #{for_password}  "></li>
+            </ul>
         </div>
     </div>
 </div>

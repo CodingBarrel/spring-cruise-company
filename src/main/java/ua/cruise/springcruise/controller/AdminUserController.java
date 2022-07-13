@@ -16,6 +16,14 @@ import ua.cruise.springcruise.service.UserService;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * An controller class that controls authorized as administrators users' requests related to user administration
+ * (such as CRUD operations) and redirects them to requested services. Controls view layer.
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Controller
+ */
+
 @Log4j2
 @Controller
 @RequiredArgsConstructor

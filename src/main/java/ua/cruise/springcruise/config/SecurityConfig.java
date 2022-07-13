@@ -6,15 +6,22 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * A configuration class that contains custom implementation of default settings related to security
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Configuration
+ */
+
 @Configuration
 public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/admin-panel**", "/admin-cruise**", "/admin-liner/**", "/admin-route/**", "/admin-routepoint/**", "admin-ticket/**", "/admin-user/**", "/data/docs/*").hasAnyRole("OWNER", "ADMIN")
+                .antMatchers("/admin-panel**", "/admin-cruise**", "/admin-liner/**", "/admin-route/**", "/admin-routepoint/**", "admin-ticket/**", "/admin-user/**").hasAnyRole("OWNER", "ADMIN")
                 .antMatchers("/ticket/**").hasAnyRole("OWNER", "ADMIN", "USER")
-                .antMatchers("/", "/about", "/auth/**", "/cruise/**", "/data/cruise/*", "/error/*").permitAll()
+                .antMatchers("/", "/about", "/auth/**", "/cruise/**", "/data/**", "/error/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

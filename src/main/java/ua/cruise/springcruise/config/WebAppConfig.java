@@ -21,6 +21,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * A configuration class that contains custom implementation of default settings related to web
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Configuration
+ * @see org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+ */
+
 @Configuration
 public class WebAppConfig implements WebMvcConfigurer {
 

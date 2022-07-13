@@ -1,6 +1,8 @@
 package ua.cruise.springcruise.entity;
 
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import ua.cruise.springcruise.entity.dictionary.TicketStatus;
 
 import javax.persistence.*;
@@ -19,6 +21,7 @@ public class Ticket {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "cruise_id")
     @ToString.Exclude
     private Cruise cruise;

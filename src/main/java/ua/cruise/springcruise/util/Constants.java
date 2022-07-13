@@ -2,6 +2,12 @@ package ua.cruise.springcruise.util;
 
 import lombok.Getter;
 
+/**
+ * Class than contains constants to prevent hard-code of variables
+ * @author Vladyslav Kucher
+ * @version 1.1
+ */
+
 @Getter
 public final class Constants {
     private Constants() {}

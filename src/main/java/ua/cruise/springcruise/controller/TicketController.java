@@ -25,6 +25,15 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
+/**
+ * An controller class that controls authorized users' requests related to ticket (such as create ticket) and redirects
+ * them to requested services. Controls view layer.
+ *
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Controller
+ */
+
 @Log4j2
 @Controller
 @RequiredArgsConstructor
@@ -90,16 +99,14 @@ public class TicketController {
         return REDIRECT_URL;
     }
 
-    @GetMapping("{id}/pay")
-    public String pay(@PathVariable Long id) {
-        ticketService.pay(id);
-        cruiseService.updateCruiseStatusDueToCapacity(ticketService.findById(id).getCruise());
-        return REDIRECT_URL;
-    }
-
-    @GetMapping("{id}/cancel")
-    public String cancel(@PathVariable Long id) {
-        ticketService.cancel(id);
+    @PatchMapping("{id}")
+    public String changeStatus(@PathVariable Long id, @RequestParam("status") long statusId) {
+        if (statusId == Constants.TICKET_PAYED_STATUS)
+            ticketService.pay(id);
+        else if (statusId == Constants.TICKET_CANCELED_STATUS)
+            ticketService.cancel(id);
+        else
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to update ticket status: wrong id [id=" + id + "]");
         cruiseService.updateCruiseStatusDueToCapacity(ticketService.findById(id).getCruise());
         return REDIRECT_URL;
     }

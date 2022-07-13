@@ -4,6 +4,13 @@ import org.mapstruct.Mapper;
 import ua.cruise.springcruise.dto.*;
 import ua.cruise.springcruise.entity.*;
 
+/**
+ * Interface that contains methods to help transform from DTO object into entity and vice-versa
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Mapper
+ */
+
 @Mapper (componentModel = "spring")
 public interface EntityMapper {
     CruiseDTO cruiseToDTO(Cruise cruise);

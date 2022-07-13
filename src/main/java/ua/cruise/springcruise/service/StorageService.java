@@ -12,6 +12,14 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.UUID;
 
+/**
+ * A service class that connects controller and model layers, thereby isolating business-logic. Controls requests
+ * related to file storage (such as save or delete).
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Service
+ */
+
 @Log4j2
 @Service
 public class StorageService {

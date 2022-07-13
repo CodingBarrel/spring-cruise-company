@@ -14,6 +14,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * An controller class that controls authorized users' requests related to cruise (such as view all cruises) and redirects
+ * them to requested services. Controls view layer.
+ * @author Vladyslav Kucher
+ * @version 1.1
+ * @see Controller
+ */
+
 @Log4j2
 @Controller
 @RequiredArgsConstructor
@@ -58,6 +66,8 @@ public class CruiseController {
                 durationAsDays = duration * 7;
             else if (durationType.equals(Constants.durationType.MONTHS))
                 durationAsDays = duration * 30;
+            else
+                durationAsDays = duration;
         } catch (IllegalArgumentException | NullPointerException ex) {
             durationType = null;
         }
